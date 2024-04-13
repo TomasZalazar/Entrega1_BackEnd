@@ -1,0 +1,9 @@
+### Recuperar todo los productos 
+GET http://localhost:8080/products
+### Recupera los productos con un limite por url 
+GET http://localhost:8080/products?limit=5
+
+### Recuperar los productos por su id
+GET http://localhost:8080/products/2
+### Recupera al no existir su codigo deuvelve un objeto con un mensaje error
+GET http://localhost:8080/products/2123
