@@ -40,7 +40,7 @@ app.get('/products/:id', async (req, res) => {
 })
 
 app.listen(PORT , () => {
-    console.log(`SERVIDOR ESCUCHANDO EL PUERTO http://localhost:8080`)
+    console.log(`SERVIDOR ESCUCHANDO EL PUERTO http://localhost:${PORT}`)
 })
 
 
