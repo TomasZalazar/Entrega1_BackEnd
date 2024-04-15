@@ -14,12 +14,13 @@ app.get('/products', async (req, res) => {
   try {
     const products = await MANAGER.getProducts();
     if (limit) {
-      res.send(products.slice(0, parseInt(limit)));
+      const productsSlice = products.slice(0, parseInt(limit))
+      res.status(200).send({status:200,payload: productsSlice});
     } else {
-      res.send({status:201 , payload: products});
+      res.status(200).send({status:200 , payload: products});
     }
   } catch (error) {
-    res.status(500).send({ error: 'Error al obtener los productos' });
+    res.status(500).send({ status: 500, error: 'Error al obtener los productos' });
   }
 });
 app.get('/products/:id', async (req, res) => {
@@ -30,10 +31,10 @@ app.get('/products/:id', async (req, res) => {
 
       res.status(200).json({status:200 , payload: product})
     }else{
-      res.status(404).json({ error: 'Producto no encontrado' })
+      res.status(404).json({status:404 , error: 'Producto no encontrado' })
     }
   }catch(err){
-    res.status(500).send({ error: 'Error al obtener los productos' });
+    res.status(500).send({status:500 , error: 'Error al obtener los productos' });
     
   }
 })
