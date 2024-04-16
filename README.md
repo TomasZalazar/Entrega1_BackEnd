@@ -14,21 +14,18 @@ npm i
 npm run app
 ````
 ## Para usar las acciones GET 
+levantar el servidor con el script
+npm run app
 ````bash 
-# Paso 1: abrir archivo
+# Paso 2: en consola : npm run app    ha
+   (esto corre por dentro nodemon ./src/app.js)
 `````
-app.http
-
+abrir el archivo app.http
 ````bash 
-# Paso 2: levantar el servidor con el script
-`````
-npm run app (esto corre por dentro nodemon ./src/app.js)
-````bash
-
-# Paso 3: despues de tener el servidor corriendo y el archivo app.http abierto
+# Paso 1: abrir archivo y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request 
 `````
 
-con el mouse encima de GET hacemos el request
+
 
 
 
