@@ -17,7 +17,7 @@ npm run app
 levantar el servidor con el script
 npm run app
 ````bash 
-# Paso 2: en consola : npm run app    ha
+# Paso 2: en consola : npm run app 
    (esto corre por dentro nodemon ./src/app.js)
 `````
 abrir el archivo app.http
