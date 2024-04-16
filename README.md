@@ -17,12 +17,12 @@ npm run app
 levantar el servidor con el script
 npm run app
 ````bash 
-# Paso 2: en consola : npm run app 
+# Paso 1: en consola : npm run app 
    (esto corre por dentro nodemon ./src/app.js)
 `````
 abrir el archivo app.http
 ````bash 
-# Paso 1: abrir archivo y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request 
+# Paso 2: abrir archivo y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request 
 `````
 
 
