@@ -40,6 +40,7 @@ export default class ProductManager {
     }
 
     async deleteProduct(id) {
+        ; // Convertir el ID a un número entero
         const index = this.products.findIndex(product => product.id === id);
         if (index !== -1) {
             this.products.splice(index, 1);
@@ -67,21 +68,32 @@ export default class ProductManager {
         }
     }
 
-    addProduct(product) {
-        const approved = product.title && product.description && product.price && product.thumbnail && product.code && product.stock;
-
-        if (!approved) return console.log("Porfavor completar todos los campos requeridos");
-
-        const validate = this.products.some((item) => item.code === product.code);
-
-        if (validate) return console.log("Ya existe un producto con este código");
-
-        product.id = this.products.length + 1;
-        this.products.push(product);
-        console.log("Producto agregado correctamente");
-        this.saveProductsToFile();
+    async addProduct(product) {
+        try {
+            const approved = product.title && product.description && product.price && product.code && product.stock;
+    
+            if (!approved) {
+                throw new Error("Por favor completar todos los campos requeridos");
+            }
+    
+            const validate = this.products.some((item) => item.code === product.code);
+    
+            if (validate) {
+                console.log('Ya existe un producto con este código. No se agregará el producto.');
+                return { success: false, message: 'Ya existe un producto con este código' };
+            }
+    
+            // product.id = this.products.length + 1;
+            this.products.push(product);
+            console.log("Producto agregado correctamente");
+            await this.saveProductsToFile();
+            
+            return { success: true, message: 'Producto agregado correctamente', product };
+        } catch (error) {
+            console.error("Error al agregar el producto:", error.message);
+            throw error;
+        }
     }
-
     async getProducts() {
         const products = await this.products
         return products
