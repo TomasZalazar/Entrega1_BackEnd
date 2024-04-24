@@ -13,18 +13,18 @@ const CART_MANAGER = new cartManager('cart.json')
 
 router.get('/:cid', async (req, res) => {
     const { cid } = req.params;
-    console.log("Obteniendo carrito con ID:", cid);
+    // console.log("Obteniendo carrito con ID:", cid);
     try {
         const cartProducts = await CART_MANAGER.getCartById(cid);
         if (cartProducts) {
-            console.log("Productos del carrito:", cartProducts);
+            // console.log("Productos del carrito:", cartProducts);
             res.status(200).send({ status: 200, payload: cartProducts });
         } else {
-            console.log("Carrito no encontrado.");
+            // console.log("Carrito no encontrado.");
             res.status(404).send({ status: 404, error: 'Carrito no encontrado' });
         }
     } catch (error) {
-        console.error("Error al obtener los productos del carrito:", error);
+        // console.error("Error al obtener los productos del carrito:", error);
         res.status(500).send({ status: 500, error: 'Error al obtener los productos del carrito' });
     }
 });

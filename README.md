@@ -51,24 +51,61 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 # GET
 
-## Recuperar los productos
+## Recuperar los productos y por su id
 
 GET http://localhost:4000/api/products
 
-## Recuperar los productos por su id 
-
 GET http://localhost:4000/api/products/:pid
 
-## Recuperar el carrito
+## recuperar el array de carrito
 
 GET http://localhost:4000/api/cart
 
-# POST
+## Recuperar el carrito por su id
 
-/api/cart
+GET http://localhost:4000/api/cart/:cid
+
+
+# POST 
+
+## Crear un nuevo producto con su body
+
+POST http://localhost:4000/api/products
+Content-Type: application/json
+
+{
+    "title": "Nuevo producto",
+    "description": "esta es la descripcion del nuevo producto",
+    "price": 200,
+    "code": "AAB01",
+    "stock": 30
+    // podria ir "thumbnails" no es obligatorio, sino seria por postman con form-data
+}
+
+## Crear un carrito con su cid 
+
+POST http://localhost:4000/api/cart/
+
+## Agregar un producto al carrito creado
+
+POST http://localhost:4000/api/cart/:cid/product/:pid
 
 # PUT
+## Actualizar campos de un producto y requisitos del body
+
+PUT http://localhost:4000/api/products/:pid
+Content-Type: application/json
+
+{
+    "title": "Nuevo producto",
+    "description": "esta es la descripcion del nuevo producto",
+    "price": 200
+}
 
 # DELETE
+
+## Eliminar producto 
+
+DELETE http://localhost:4000/api/products/:pid
 
 ````
