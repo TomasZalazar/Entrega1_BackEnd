@@ -28,7 +28,6 @@ abrir el archivo app.http
 
 
 
-
 Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes alguna pregunta o problema, no dudes en preguntar.
 
 ## Rutas
@@ -42,7 +41,6 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 # Cart
 
 /api/cart
-
 
 ````
 
@@ -65,7 +63,6 @@ GET http://localhost:4000/api/cart
 
 GET http://localhost:4000/api/cart/:cid
 
-
 # POST 
 
 ## Crear un nuevo producto con su body
@@ -78,8 +75,8 @@ Content-Type: application/json
     "description": "esta es la descripcion del nuevo producto",
     "price": 200,
     "code": "AAB01",
-    "stock": 30
-    // podria ir "thumbnails" no es obligatorio, sino seria por postman con form-data
+    "stock": 30,
+    "thumbnails":
 }
 
 ## Crear un carrito con su cid 
