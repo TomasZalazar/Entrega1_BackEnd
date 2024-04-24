@@ -1,101 +1,69 @@
 [
   {
-    "title": "Producto 1",
-    "description": "Descripción del producto 1.",
-    "price": 100,
-    "thumbnail": "https://example.com/product1.jpg",
-    "code": "P001",
-    "stock": 50,
-    "id": 1
-  },
-  {
-    "title": "Producto 2",
-    "description": "Descripción del producto 2.",
-    "price": 120,
-    "thumbnail": "https://example.com/product2.jpg",
-    "code": "P002",
-    "stock": 60,
-    "id": 2
-  },
-  {
-    "title": "Producto 3",
-    "description": "Descripción del producto 3.",
-    "price": 80,
-    "thumbnail": "https://example.com/product3.jpg",
-    "code": "P003",
-    "stock": 70,
-    "id": 3
-  },
-  {
-    "title": "Producto 4",
-    "description": "Descripción del producto 4.",
-    "price": 150,
-    "thumbnail": "https://example.com/product4.jpg",
-    "code": "P004",
-    "stock": 45,
-    "id": 4
-  },
-  {
-    "title": "Producto 5",
-    "description": "Descripción del producto 5.",
-    "price": 200,
-    "thumbnail": "https://example.com/product5.jpg",
-    "code": "P005",
-    "stock": 55,
-    "id": 5
-  },
-  {
-    "title": "Producto 6",
-    "description": "Descripción del producto 6.",
-    "price": 90,
-    "thumbnail": "https://example.com/product6.jpg",
-    "code": "P006",
-    "stock": 80,
-    "id": 6
-  },
-  {
-    "title": "Producto 7",
-    "description": "Descripción del producto 7.",
-    "price": 110,
-    "thumbnail": "https://example.com/product7.jpg",
-    "code": "P007",
-    "stock": 65,
-    "id": 7
-  },
-  {
-    "title": "Producto 8",
-    "description": "Descripción del producto 8.",
-    "price": 130,
-    "thumbnail": "https://example.com/product8.jpg",
-    "code": "P008",
-    "stock": 75,
-    "id": 8
-  },
-  {
-    "title": "Producto 9",
-    "description": "Descripción del producto 9.",
-    "price": 180,
-    "thumbnail": "https://example.com/product9.jpg",
-    "code": "P009",
-    "stock": 40,
-    "id": 9
-  },
-  {
-    "title": "Producto 10",
-    "description": "Descripción del producto 10.",
-    "price": 160,
-    "thumbnail": "https://example.com/product10.jpg",
-    "code": "P010",
-    "stock": 85,
-    "id": 10
-  },
-  {
     "id": "d6a27d1351751222",
     "title": "asdasd",
     "description": "asdasdas",
     "price": "1308",
     "code": "1",
     "stock": "75",
+    "thumbnails": []
+  },
+  {
+    "id": "a829adeda7243ab6",
+    "title": "Nuevo nombre del producto",
+    "description": "Descripción actualizada",
+    "price": 999,
+    "code": "44AA",
+    "stock": "123",
+    "thumbnails": [
+      "Central_Av_Apart-removebg-preview.png"
+    ]
+  },
+  {
+    "id": "27680dae8e6598b8",
+    "title": "producto 1",
+    "description": "descripcion del producto 1",
+    "price": "1500",
+    "code": "AA01",
+    "stock": "123",
+    "thumbnails": [
+      "air-max-90-zapatillas-DjsGZJ.png"
+    ]
+  },
+  {
+    "id": "dc30f4564dab006e",
+    "title": "producto 2",
+    "description": "Descripción del producto 2",
+    "price": "2500",
+    "code": "AA02",
+    "stock": "50",
+    "thumbnails": []
+  },
+  {
+    "id": "69524cc1efc9ad7f",
+    "title": "producto 3",
+    "description": "descripcion del producto 3",
+    "price": "3500",
+    "code": "AA03",
+    "stock": "35",
+    "thumbnails": []
+  },
+  {
+    "id": "21800074f342cd67",
+    "title": "producto 4",
+    "description": "descripcion del producto 5",
+    "price": "4500",
+    "code": "AA04",
+    "stock": "44",
+    "thumbnails": []
+  },
+  {
+    "id": "f39e8d7b7024f9b1",
+    "title": "producto 5",
+    "description": "descripcion del producto 5",
+    "price": "5500",
+    "code": "AA05",
+    "stock": "55",
     "thumbnails": []
   }
 ]

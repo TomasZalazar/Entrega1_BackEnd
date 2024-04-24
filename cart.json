@@ -1,0 +1,24 @@
+[
+  {
+    "cid": "2f34d16844a0ce74",
+    "quantity": 1,
+    "products": [
+      {
+        "cid": "a829adeda7243ab6",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "cid": "f30a32067d266cea",
+    "quantity": 1,
+    "products": []
+  },
+  {
+    "cid": "66bf0ebe2a201cf8",
+    "quantity": 1,
+    "products": [
+      
+    ]
+  }
+]

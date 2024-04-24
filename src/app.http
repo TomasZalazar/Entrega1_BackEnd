@@ -1,18 +1,27 @@
 ### Recuperar todo los productos 
-GET http://localhost:8080/products
+GET http://localhost:4000/api/products
 ### Recupera los productos con un limite por url 
-GET http://localhost:8080/products?limit=3
+GET http://localhost:4000/api/products?limit=2
 ### Recuperar los productos por su id
-GET http://localhost:8080/products/2
+GET http://localhost:4000/api/products/2
 ### Recupera al no existir su codigo deuvelve un objeto con un mensaje error
 POST http://localhost:4000/api/products
 Content-Type: application/json
 
 {
     "title": "producto nuevo",
-    "description": "esta es la descripcion del producto nuevo",
+    "description": "esta es la descripcion del producto nuevoasd",
     "price": 200,
-    "code": "AABB123",
-    "stock": 30,
-    
+    "code": "bbb111",
+    "stock": 30
 }
+###
+GET http://localhost:4000/api/cart
+###
+POST http://localhost:4000/api/cart
+Content-Type: application/json
+
+{
+  "quantity": 
+}
+

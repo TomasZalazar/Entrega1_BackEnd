@@ -7,7 +7,6 @@ export default class ProductManager {
 
         this.initialize()
     }
-
     async readProductsFromFile() {
         try {
             const data = await fs.promises.readFile(this.filePath, 'utf-8');
@@ -18,23 +17,21 @@ export default class ProductManager {
             console.error("Error al leer el archivo:", error);
         }
     }
-
     async saveProductsToFile() {
         try {
             const jsonData = JSON.stringify(this.products, null, 2);
-            await fs.promises.writeFile(this.filePath, jsonData, 'utf-8');
+            await fs.promises.writeFile(this.filePath, jsonData, { encoding: 'utf-8', flag: 'w' });
             console.log("Productos guardados correctamente en el archivo.");
         } catch (error) {
             console.log("Error al guardar el archivo:", error);
         }
     }
-
     async initialize() {
         try {
-            await this.readProductsFromFile(); 
-            
+            await this.readProductsFromFile();
+
         } catch (error) {
-           
+
             console.error("Error al inicializar ProductManager:", error);
         }
     }
@@ -53,41 +50,47 @@ export default class ProductManager {
     }
     async updateProduct(id, updatedProduct) {
         try {
-            const index = this.products.findIndex(product => product.id === id);
+            const existingProduct = await this.getProductById(id);
+            if (!existingProduct) {
+                console.log("No se encontró ningún producto con el ID proporcionado");
+                return false;
+            }
+            const index = this.products.findIndex(i => i.id === id);
             if (index !== -1) {
                 this.products[index] = { ...this.products[index], ...updatedProduct };
-                await this.saveProductsToFile();
+                await this.saveProductsToFile(); // Espera a que se complete la escritura en el archivo
                 console.log("Producto actualizado correctamente");
                 return true;
+            } else {
+                console.log("No se encontró ningún producto con el ID proporcionado en la lista de productos");
+                return false;
             }
-            console.log("No se encontró ningún producto con el ID proporcionado");
-            return false;
         } catch (error) {
             console.error("Error al actualizar el producto:", error);
             return false;
         }
     }
+    
 
+    
     async addProduct(product) {
         try {
             const approved = product.title && product.description && product.price && product.code && product.stock;
-    
             if (!approved) {
                 throw new Error("Por favor completar todos los campos requeridos");
             }
-    
             const validate = this.products.some((item) => item.code === product.code);
-    
+
             if (validate) {
                 console.log('Ya existe un producto con este código. No se agregará el producto.');
                 return { success: false, message: 'Ya existe un producto con este código' };
             }
-    
+
             // product.id = this.products.length + 1;
             this.products.push(product);
             console.log("Producto agregado correctamente");
             await this.saveProductsToFile();
-            
+
             return { success: true, message: 'Producto agregado correctamente', product };
         } catch (error) {
             console.error("Error al agregar el producto:", error.message);
@@ -100,8 +103,10 @@ export default class ProductManager {
     }
 
     async getProductById(id) {
-        const products = await this.getProducts()
-        const product = products.find((i) => i.id === parseInt(id));
+        const products = await this.getProducts();
+        // console.log("Lista de productos:", products);
+        const product = products.find((i) => i.id === id);
+        // console.log("ID del producto buscado:", id); // Imprimir el ID del producto buscado
         return product ? product : (console.log("Producto no encontrado"), null);
     }
 }
@@ -147,11 +152,11 @@ const newProduct3 = {
 // manager.addProduct(newProduct4)
 
 manager.initialize() // cuando se inicializa crea el .json
-.then(()=> {
-    // manager.addProduct(newProduct2)
-    // console.log(manager.getProducts()) // traer todos los objetos dentro del JSON
-    // console.log(manager.getProductById(2))  // traer todos los objetos dentro del JSON por el id indicado
-    // manager.updateProduct(4,newProduct)
-    // manager.deleteProduct(4)   
-})
+    .then(() => {
+        // manager.addProduct(newProduct2)
+        // console.log(manager.getProducts()) // traer todos los objetos dentro del JSON
+        // console.log(manager.getProductById(2))  // traer todos los objetos dentro del JSON por el id indicado
+        // manager.updateProduct(4,newProduct)
+        // manager.deleteProduct(4)   
+    })
 

@@ -34,24 +34,18 @@ router.get('/:pid', async (req, res) => {
 
     }
 })
-let idIncrement = 1
-// Inicializamos un contador para los IDs de productos
+
+
 router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
     const { title, description, price, code, stock } = req.body;
-    const thumbnails = req.files.map(file => file.filename);
-    
-    // Verificar si los campos obligatorios están presentes en el cuerpo de la solicitud
-    if (!title || !description || !price || !code || !stock) {
+    if (!title || !description || !price || !code || !stock) {// Verificar si los campos obligatorios están presentes en el cuerpo de la solicitud
         return res.status(400).json({ error: 'Faltan campos obligatorios en la solicitud' });
     }
-    
-    // Generar un ID aleatorio para el nuevo producto
-    function generateRandomId() {
+    const thumbnails = req.files.map(file => file.filename);
+    function generateRandomId() {// Generar un ID aleatorio para el nuevo producto
         return crypto.randomBytes(8).toString('hex');
     }
-
-    // Crear un nuevo objeto de producto con los datos del cuerpo de la solicitud
-    const newProduct = {
+    const newProduct = {  // Crear un nuevo objeto de producto con los datos del cuerpo de la solicitud
         id: generateRandomId(), // Asignamos el ID y luego incrementamos el contador
         title,
         description,
@@ -60,28 +54,35 @@ router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
         stock,
         thumbnails
     };
-
-    // Agregar el nuevo producto utilizando el método addProduct del ProductManager
     try {
         const addedProduct = await MANAGER.addProduct(newProduct);
-
-        // Si el producto se agregó correctamente, enviar una respuesta con un mensaje de éxito
-        return res.status(201).json({ status: 201, message: 'Producto agregado correctamente', product: addedProduct });
+        return res.status(201).json({ status: 201, message: 'Producto agregado correctamente', product: addedProduct });// Agregar el nuevo producto utilizando el método addProduct del ProductManager
     } catch (error) {
-        // Si hubo un error al agregar el producto, enviar una respuesta con un mensaje de error
         return res.status(500).json({ error: 'Error al agregar el producto', message: error.message });
     }
 });
-router.put('/', () => {
-
-})
+router.put('/:pid', async (req, res) => {
+    const { pid } = req.params;
+    const { title, description, price } = req.body;
+    if (!title || !description || !price) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios en la solicitud' });
+    }
+    try {
+        const productUpdateResult = await MANAGER.updateProduct(pid, { title, description, price });
+        if (productUpdateResult) {
+            return res.status(200).json({ status: 200, message: 'Producto actualizado correctamente' });
+        } else {
+            return res.status(404).json({ error: 'No se encontró ningún producto con el ID proporcionado' });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: 'Error al actualizar el producto', message: error.message });
+    }
+});
 router.delete('/:pid', async (req, res) => {
     const { pid } = req.params;
-
     try {
         const deleteProduct = await MANAGER.deleteProduct(pid);
         if (deleteProduct) {
-
             res.status(200).send({ status: 200, payload: deleteProduct, message: `Producto con el ID ${pid} eliminado correctamente` });
         } else {
             res.status(404).send({ status: 404, error: `Producto con ID ${pid} no encontrado` });
@@ -91,4 +92,5 @@ router.delete('/:pid', async (req, res) => {
         res.status(500).send({ status: 500, error: 'Error al eliminar el producto' });
     }
 });
+
 export default router

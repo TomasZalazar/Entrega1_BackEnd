@@ -30,3 +30,45 @@ abrir el archivo app.http
 
 
 Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes alguna pregunta o problema, no dudes en preguntar.
+
+## Rutas
+
+```python 
+
+# Products
+
+/api/products
+
+# Cart
+
+/api/cart
+
+
+````
+
+## Acciones
+```python 
+
+# GET
+
+## Recuperar los productos
+
+GET http://localhost:4000/api/products
+
+## Recuperar los productos por su id 
+
+GET http://localhost:4000/api/products/:pid
+
+## Recuperar el carrito
+
+GET http://localhost:4000/api/cart
+
+# POST
+
+/api/cart
+
+# PUT
+
+# DELETE
+
+````
