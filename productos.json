@@ -56,5 +56,14 @@
     "code": "AA05",
     "stock": "55",
     "thumbnails": []
+  },
+  {
+    "id": "0b5824beaf223800",
+    "title": "producto 5",
+    "description": "descripcion del producto 5",
+    "price": "5500",
+    "code": "AA06",
+    "stock": "55",
+    "thumbnails": []
   }
 ]

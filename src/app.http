@@ -9,11 +9,12 @@ POST http://localhost:4000/api/products
 Content-Type: application/json
 
 {
-    "title": "producto nuevo",
-    "description": "esta es la descripcion del producto nuevoasd",
+    "title": "Nuevo producto",
+    "description": "esta es la descripcion del nuevo producto",
     "price": 200,
-    "code": "bbb111",
-    "stock": 30
+    "code": "AAB01a",
+    "stock": 30,
+    "thumbnails":
 }
 ###
 GET http://localhost:4000/api/cart
