@@ -5,7 +5,10 @@ const router = Router();
 router.get('/', (req, res) => {
     const viewProducts = { products: products };
 
-    res.render('products', viewProducts);
+    res.render('home', viewProducts);
 });
 
+router.get('/realtimeproducts', (req, res) => {
+    res.render('realTimeProducts', { products: products });
+});
 export default router;

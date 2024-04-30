@@ -1,27 +1,5 @@
 [
   {
-    "id": "a829adeda7243ab6",
-    "title": "Nuevo nombre del producto",
-    "description": "Descripción actualizada",
-    "price": 999,
-    "code": "44AA",
-    "stock": "123",
-    "thumbnails": [
-      "Central_Av_Apart-removebg-preview.png"
-    ]
-  },
-  {
-    "id": "27680dae8e6598b8",
-    "title": "producto 1",
-    "description": "descripcion del producto 1",
-    "price": "1500",
-    "code": "AA01",
-    "stock": "123",
-    "thumbnails": [
-      "air-max-90-zapatillas-DjsGZJ.png"
-    ]
-  },
-  {
     "id": "dc30f4564dab006e",
     "title": "producto 2",
     "description": "Descripción del producto 2",
@@ -64,6 +42,107 @@
     "price": "5500",
     "code": "AA06",
     "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "d861402181caad57",
+    "title": "producto 19",
+    "description": "descripcion random del producto",
+    "price": "4000",
+    "code": "AA019",
+    "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "aba9249cb5be160c",
+    "title": "producto 20",
+    "description": "descripcion random del producto 20",
+    "price": "4000",
+    "code": "AA020",
+    "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "0f70e83635c22351",
+    "title": "producto 21",
+    "description": "descripcion random del producto 21",
+    "price": "4000",
+    "code": "AA021",
+    "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "62df54117da9ee1d",
+    "title": "producto 22",
+    "description": "descripcion random del producto 22",
+    "price": "4000",
+    "code": "AA022",
+    "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "db5190c16a385f7a",
+    "title": "producto 23",
+    "description": "descripcion del producto 23",
+    "price": "5500",
+    "code": "AA023",
+    "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "e85495f599d0c53f",
+    "title": "producto 24",
+    "description": "descripcion del producto 25",
+    "price": "5500",
+    "code": "AA024",
+    "stock": "55",
+    "thumbnails": [
+      "CAA.png"
+    ]
+  },
+  {
+    "id": "23090e6fc9e97a26",
+    "title": "producto 30",
+    "description": "descripcion del producto 30",
+    "price": "3000",
+    "code": "AA030",
+    "stock": "30",
+    "thumbnails": []
+  },
+  {
+    "id": "1558c7bba090a3ef",
+    "title": "Producto 31",
+    "description": "descripcion del producto 31",
+    "price": "5500",
+    "code": "AA031",
+    "stock": "55",
+    "thumbnails": []
+  },
+  {
+    "id": "d304628b9d7ffa1f",
+    "title": "producto 35",
+    "description": "descripcion del producto 35",
+    "price": "35000",
+    "code": "AA035",
+    "stock": "35",
+    "thumbnails": []
+  },
+  {
+    "id": "153d43576f8f0aa4",
+    "title": "asdasdasd",
+    "description": "asdasdasd",
+    "price": "123123",
+    "code": "AA039",
+    "stock": "35",
+    "thumbnails": []
+  },
+  {
+    "id": "2d9ac7aa34831a9b",
+    "title": "producto 1000",
+    "description": "descripcion del producto 100",
+    "price": "5000",
+    "code": "AA0100",
+    "stock": "1000",
     "thumbnails": []
   }
 ]

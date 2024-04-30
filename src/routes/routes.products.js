@@ -2,8 +2,10 @@ import { Router } from "express";
 import ProductManager from '../desafio_2.js';
 import { uploader } from "../uploader.js";
 import crypto from "crypto"
+import { socketServer } from "../app.js";
 const router = Router()
 const MANAGER = new ProductManager('productos.json')
+
 
 router.get('/', async (req, res) => {
     const { limit } = req.query;
@@ -37,11 +39,12 @@ router.get('/:pid', async (req, res) => {
 
 
 router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
+    const socketServer = req.app.get('socketServer')
     const { title, description, price, code, stock } = req.body;
     if (!title || !description || !price || !code || !stock) {// Verificar si los campos obligatorios están presentes en el cuerpo de la solicitud
         return res.status(400).json({ error: 'Faltan campos obligatorios en la solicitud' });
     }
-    const thumbnails = req.files.map(file => file.filename);
+    const thumbnails = req.files ? req.files.map(file => file.filename) : [];
     function generateRandomId() {// Generar un ID aleatorio para el nuevo producto
         return crypto.randomBytes(8).toString('hex');
     }
@@ -56,6 +59,8 @@ router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
     };
     try {
         const addedProduct = await MANAGER.addProduct(newProduct);
+        // Emitir un evento de nuevo producto a través de Socket.IO
+        socketServer.emit('nuevoProducto', addedProduct);
         return res.status(201).json({ status: 201, message: 'Producto agregado correctamente', product: addedProduct });// Agregar el nuevo producto utilizando el método addProduct del ProductManager
     } catch (error) {
         return res.status(500).json({ error: 'Error al agregar el producto', message: error.message });
@@ -92,5 +97,6 @@ router.delete('/:pid', async (req, res) => {
         res.status(500).send({ status: 500, error: 'Error al eliminar el producto' });
     }
 });
+
 
 export default router
