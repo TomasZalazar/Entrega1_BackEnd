@@ -90,5 +90,14 @@
     "thumbnails": [
       "CAA.png"
     ]
+  },
+  {
+    "id": "72f807aa0404d5bc",
+    "title": "producto 25",
+    "description": "descripcion del producto 25",
+    "price": "2500",
+    "code": "AA025",
+    "stock": "25",
+    "thumbnails": []
   }
 ]

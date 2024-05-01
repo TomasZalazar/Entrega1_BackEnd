@@ -61,7 +61,7 @@ router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
     try {
         const addedProduct = await MANAGER.addProduct(newProduct);
         // Emitir un evento de nuevo producto a través de Socket.IO
-        socketServer.emit('nuevoProducto', addedProduct);
+        socketServer.emit('nuevoProducto',addedProduct);
         return res.status(201).json({ status: 201, message: 'Producto agregado correctamente', product: addedProduct });// Agregar el nuevo producto utilizando el método addProduct del ProductManager
     } catch (error) {
         return res.status(500).json({ error: 'Error al agregar el producto', message: error.message });
