@@ -36,11 +36,19 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 # Products
 
-/api/products
+http://localhost:4000/api/products
 
 # Cart
 
-/api/cart
+http://localhost:4000/api/cart
+
+# home
+
+http://localhost:4000/home
+
+# Real time products
+
+http://localhost:4000/realtimeproducts
 
 ````
 
