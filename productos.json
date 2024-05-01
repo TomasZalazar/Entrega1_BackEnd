@@ -27,15 +27,6 @@
     "thumbnails": []
   },
   {
-    "id": "f39e8d7b7024f9b1",
-    "title": "producto 5",
-    "description": "descripcion del producto 5",
-    "price": "5500",
-    "code": "AA05",
-    "stock": "55",
-    "thumbnails": []
-  },
-  {
     "id": "0b5824beaf223800",
     "title": "producto 5",
     "description": "descripcion del producto 5",
@@ -99,50 +90,5 @@
     "thumbnails": [
       "CAA.png"
     ]
-  },
-  {
-    "id": "23090e6fc9e97a26",
-    "title": "producto 30",
-    "description": "descripcion del producto 30",
-    "price": "3000",
-    "code": "AA030",
-    "stock": "30",
-    "thumbnails": []
-  },
-  {
-    "id": "1558c7bba090a3ef",
-    "title": "Producto 31",
-    "description": "descripcion del producto 31",
-    "price": "5500",
-    "code": "AA031",
-    "stock": "55",
-    "thumbnails": []
-  },
-  {
-    "id": "d304628b9d7ffa1f",
-    "title": "producto 35",
-    "description": "descripcion del producto 35",
-    "price": "35000",
-    "code": "AA035",
-    "stock": "35",
-    "thumbnails": []
-  },
-  {
-    "id": "153d43576f8f0aa4",
-    "title": "asdasdasd",
-    "description": "asdasdasd",
-    "price": "123123",
-    "code": "AA039",
-    "stock": "35",
-    "thumbnails": []
-  },
-  {
-    "id": "2d9ac7aa34831a9b",
-    "title": "producto 1000",
-    "description": "descripcion del producto 100",
-    "price": "5000",
-    "code": "AA0100",
-    "stock": "1000",
-    "thumbnails": []
   }
 ]

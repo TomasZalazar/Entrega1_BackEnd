@@ -2,7 +2,8 @@ import { Router } from "express";
 import ProductManager from '../desafio_2.js';
 import { uploader } from "../uploader.js";
 import crypto from "crypto"
-import { socketServer } from "../app.js";
+
+
 const router = Router()
 const MANAGER = new ProductManager('productos.json')
 
@@ -84,10 +85,12 @@ router.put('/:pid', async (req, res) => {
     }
 });
 router.delete('/:pid', async (req, res) => {
+    const socketServer = req.app.get('socketServer')
     const { pid } = req.params;
     try {
         const deleteProduct = await MANAGER.deleteProduct(pid);
         if (deleteProduct) {
+            socketServer.emit('productoEliminado', { id: pid });
             res.status(200).send({ status: 200, payload: deleteProduct, message: `Producto con el ID ${pid} eliminado correctamente` });
         } else {
             res.status(404).send({ status: 404, error: `Producto con ID ${pid} no encontrado` });

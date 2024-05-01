@@ -10,5 +10,6 @@ router.get('/', (req, res) => {
 
 router.get('/realtimeproducts', (req, res) => {
     res.render('realTimeProducts', { products: products });
+    
 });
 export default router;
