@@ -2,7 +2,7 @@ import { Router } from "express";
 import products from "../../productos.json" assert { type: "json" };
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/home', (req, res) => {
     const viewProducts = { products: products };
 
     res.render('home', viewProducts);

@@ -40,7 +40,6 @@ router.get('/:pid', async (req, res) => {
 
 
 router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
-    const socketServer = req.app.get('socketServer')
     const { title, description, price, code, stock } = req.body;
     if (!title || !description || !price || !code || !stock) {// Verificar si los campos obligatorios están presentes en el cuerpo de la solicitud
         return res.status(400).json({ error: 'Faltan campos obligatorios en la solicitud' });
@@ -61,7 +60,7 @@ router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
     try {
         const addedProduct = await MANAGER.addProduct(newProduct);
         // Emitir un evento de nuevo producto a través de Socket.IO
-        socketServer.emit('nuevoProducto',addedProduct);
+        req.app.get('socketServer').emit('nuevoProducto',addedProduct);
         return res.status(201).json({ status: 201, message: 'Producto agregado correctamente', product: addedProduct });// Agregar el nuevo producto utilizando el método addProduct del ProductManager
     } catch (error) {
         return res.status(500).json({ error: 'Error al agregar el producto', message: error.message });
@@ -85,12 +84,11 @@ router.put('/:pid', async (req, res) => {
     }
 });
 router.delete('/:pid', async (req, res) => {
-    const socketServer = req.app.get('socketServer')
     const { pid } = req.params;
     try {
         const deleteProduct = await MANAGER.deleteProduct(pid);
         if (deleteProduct) {
-            socketServer.emit('productoEliminado', { id: pid });
+            req.app.get('socketServer').emit('productoEliminado', { id: deleteProduct.id});
             res.status(200).send({ status: 200, payload: deleteProduct, message: `Producto con el ID ${pid} eliminado correctamente` });
         } else {
             res.status(404).send({ status: 404, error: `Producto con ID ${pid} no encontrado` });

@@ -50,135 +50,136 @@
     integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
     crossorigin="anonymous"></script>
 <script>
-    const serverAddress = 'ws://localhost:4000';
-    const socketClient = io(serverAddress);
-    const productsList = document.getElementById('productsList');
+    document.addEventListener('DOMContentLoaded', () => {
+        const socketClient = io('ws://localhost:4000');
+        const productsList = document.getElementById('productsList');
 
-    document.getElementById('agregar-producto-btn').addEventListener('click', async (event) => {
-        event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+        // Evento de clic para agregar un producto
+        document.getElementById('agregar-producto-btn').addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
 
-        // Crear un objeto FormData para enviar el formulario
-        const formData = new FormData();
-
-        // Agregar los campos del formulario al objeto FormData
-        formData.append('title', document.getElementById('nombre-producto').value);
-        formData.append('description', document.getElementById('descripcion-producto').value);
-        formData.append('price', document.getElementById('precio-producto').value);
-        formData.append('code', document.getElementById('codigo-producto').value);
-        formData.append('stock', document.getElementById('stock-producto').value);
-
-        // Agregar los archivos adjuntos al objeto FormData
-        const thumbnailsInput = document.getElementById('thumbnails-producto');
-        for (const file of thumbnailsInput.files) {
-            formData.append('thumbnails', file);
-        }
-
-        try {
-            // Realizar la solicitud POST al servidor
-            const response = await fetch('/api/products/', {
-                method: 'POST',
-                body: formData,
-            });
-
-            // Verificar si la solicitud fue exitosa
-            if (response.ok) {
-                // Limpiar los campos del formulario después de enviar el producto
-                document.getElementById('formulario-producto').reset();
-            } else {
-                // Mostrar un mensaje de error si la solicitud no fue exitosa
-                console.error('Error al agregar el producto:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error al agregar el producto:', error.message);
-        }
-    });
-    // Agregar evento de clic al icono de papelera para eliminar el producto
-    document.addEventListener('click', async (event) => {
-        if (event.target.classList.contains('delete-product')) {
-            const productId = event.target.getAttribute('data-product-id');
+            // Crear un objeto con los datos del nuevo producto
+            const nuevoProducto = {
+                title: document.getElementById('nombre-producto').value,
+                description: document.getElementById('descripcion-producto').value,
+                price: document.getElementById('precio-producto').value,
+                code: document.getElementById('codigo-producto').value,
+                stock: document.getElementById('stock-producto').value,
+                // Agregar aquí cualquier otro campo del formulario que necesites enviar
+            };
 
             try {
-                // Realiza una solicitud al servidor para eliminar el producto
-                const response = await fetch(`/api/products/${productId}`, {
-                    method: 'DELETE'
+                // Realizar la solicitud POST al servidor
+                const formData = new FormData();
+                formData.append('title', nuevoProducto.title);
+                formData.append('description', nuevoProducto.description);
+                formData.append('price', nuevoProducto.price);
+                formData.append('code', nuevoProducto.code);
+                formData.append('stock', nuevoProducto.stock);
+
+                const thumbnailsInput = document.getElementById('thumbnails-producto');
+                for (const file of thumbnailsInput.files) {
+                    formData.append('thumbnails', file);
+                }
+
+                const response = await fetch('/api/products/', {
+                    method: 'POST',
+                    body: formData,
                 });
 
+                // Verificar si la solicitud fue exitosa
                 if (response.ok) {
-                    // Elimina el producto de la lista en el cliente
-                    event.target.parentElement.remove();
+                    // Limpiar los campos del formulario después de enviar el producto
+                    document.getElementById('formulario-producto').reset();
+                    // Emitir el evento 'nuevoProducto' al servidor a través de Socket.IO
+                    socketClient.emit('nuevoProducto', nuevoProducto);
+
                 } else {
-                    console.error('Error al eliminar el producto:', response.statusText);
+                    // Mostrar un mensaje de error si la solicitud no fue exitosa
+                    console.error('Error al agregar el producto:', response.statusText);
                 }
             } catch (error) {
-                console.error('Error al eliminar el producto:', error.message);
-            }
-        }
-    });
-
-   // Escuchar eventos del servidor Socket.IO para nuevos productos
-socketClient.on('nuevoProducto', data => {
-    console.log(data);
-    if (data && data.product) {
-        const nuevoProducto = data.product;
-        // Crear un nuevo elemento de la lista con la información del nuevo producto
-        const nuevoItem = document.createElement('li');
-        nuevoItem.textContent = `${nuevoProducto.title} ($${nuevoProducto.price})`;
-        nuevoItem.classList.add('list-group-item');
-
-        // Agregar un icono de papelera para eliminar el producto
-        const deleteIcon = document.createElement('span');
-        deleteIcon.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                <path d="M3 5V3h10v2H3z"/>
-                <path fill-rule="evenodd" d="M5.5 0a.5.5 0 0 1 .5.5V1h4V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v1H1V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6zm5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5zm2 0a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/>
-            </svg>
-        `;
-        deleteIcon.classList.add('delete-product');
-        deleteIcon.setAttribute('data-product-id', nuevoProducto.id);
-
-        // Agregar el icono de papelera al elemento del producto
-        nuevoItem.appendChild(deleteIcon);
-
-        // Agregar el nuevo elemento de la lista
-        productsList.appendChild(nuevoItem);
-
-        // Agregar evento de clic al icono de papelera para eliminar el producto
-        deleteIcon.addEventListener('click', async (event) => {
-            const productId = event.currentTarget.getAttribute('data-product-id');
-
-            try {
-                // Realizar una solicitud al servidor para eliminar el producto
-                const response = await fetch(`/api/products/${productId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    // Eliminar el producto de la lista en el cliente
-                    event.currentTarget.parentElement.remove();
-                } else {
-                    console.error('Error al eliminar el producto:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error al eliminar el producto:', error.message);
+                console.error('Error al agregar el producto:', error.message);
             }
         });
-    } else {
-        console.error('Datos recibidos no válidos:', data);
-    }
-});
 
-// Escuchar eventos del servidor Socket.IO para productos eliminados
-socketClient.on('productoEliminado', data => {
-    console.log(data);
-    if (data && data.id) {
-        const productId = data.id;
-        // Encontrar y eliminar el elemento de la lista que coincide con el ID del producto eliminado
-        const listItemToDelete = document.querySelector(`[data-product-id="${productId}"]`);
-        if (listItemToDelete) {
-            listItemToDelete.parentElement.remove();
-        }
-    } else {
-        console.error('Datos recibidos no válidos:', data);
-    }
-});
+        // Escuchar eventos del servidor Socket.IO para nuevos productos
+        socketClient.on('nuevoProducto', data => {
+            if (data && data.product) {
+                const nuevoProducto = data.product;
+
+                // Crear un nuevo elemento de la lista con la información del nuevo producto
+                const nuevoItem = document.createElement('li');
+                nuevoItem.textContent = `${nuevoProducto.title} ($${nuevoProducto.price})`;
+                nuevoItem.classList.add('list-group-item');
+
+                // Agregar un icono de papelera para eliminar el producto
+                const deleteIcon = document.createElement('span');
+                deleteIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M3 5V3h10v2H3z"/>
+                        <path fill-rule="evenodd" d="M5.5 0a.5.5 0 0 1 .5.5V1h4V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v1H1V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6zm5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5zm2 0a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/>
+                    </svg>`;
+                deleteIcon.classList.add('delete-product');
+                deleteIcon.setAttribute('data-product-id', nuevoProducto.id);
+
+                // Agregar el icono de papelera al elemento del producto
+                nuevoItem.appendChild(deleteIcon);
+
+                // Agregar el nuevo elemento de la lista
+                productsList.appendChild(nuevoItem);
+
+                // Agregar evento de clic al icono de papelera para eliminar el producto
+                deleteIcon.addEventListener('click', async (event) => {
+                    event.preventDefault(); // Prevenir el comportamiento predeterminado del evento
+
+                    const productId = event.currentTarget.getAttribute('data-product-id');
+                    const listItemToDelete = event.currentTarget.parentElement; // Obtener el elemento padre del icono de eliminar
+
+                    try {
+                        // Realizar una solicitud al servidor para eliminar el producto
+                        const response = await fetch(`/api/products/${productId}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (response.ok) {
+                            // Eliminar el elemento de la lista en el cliente
+                            listItemToDelete.remove();
+
+                            // Enviar el ID del producto eliminado al servidor para emitir el evento 'productoEliminado'
+                            socketClient.emit('productoEliminado', { id: productId });
+                        } else {
+                            console.error('Error al eliminar el producto:', response.statusText);
+                        }
+                    } catch (error) {
+                        console.error('Error al eliminar el producto:', error.message);
+                    }
+                });
+            } else {
+                console.error('Datos recibidos no válidos:', data);
+            }
+        });
+
+        // Escuchar eventos del servidor Socket.IO para productos eliminados
+        // Escuchar eventos del servidor Socket.IO para productos eliminados
+        socketClient.on('productoEliminado', data => {
+            if (data && data.id) {
+                const productId = data.id; // Obtener el ID del producto
+
+                // Buscar el elemento de la lista que coincide con el ID del producto eliminado
+                const listItemToDelete = document.querySelector(`[data-product-id="${productId}"]`);
+
+                // Verificar si se encontró el elemento
+                if (listItemToDelete) {
+                    const parentElement = listItemToDelete.parentElement; // Obtener el elemento padre (la lista)
+
+                    // Verificar si el elemento padre existe
+                    if (parentElement) {
+                        parentElement.removeChild(listItemToDelete); // Eliminar el elemento de la lista
+                    } else {
+                        console.error('Error: El elemento padre no existe');
+                    }
+                }
+            }
+        });
+    });
 </script>
