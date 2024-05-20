@@ -1,6 +1,6 @@
 import { Router } from "express";
-import cartManager from '../cartManager.js'
-import ProductManager from "../desafio_2.js";
+import cartManager from '../dao/fylesystem/cartManager.js'
+import ProductManager from "../dao/fylesystem/productManager.js";
 
 /* carts.routes.js (3 endpoints): 
     - debe agregar un item al array products del carrito, con solo el id del producto y una propiedad quantity (por ahora en 1).
