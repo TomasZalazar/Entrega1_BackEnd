@@ -69,7 +69,19 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 
 
-- Crear un carrito con su ID: [POST http://localhost:4000/api/db/cart](http://localhost:4000/api/cart)
+  - Crear un carrito con usuario y producto : [POST http://localhost:4000/api/db/cart](http://localhost:4000/api/cart)
+
+  ```
+  {
+  "_user_id": "664b2cb2c29eda94e08c7689",
+  "products": [
+    {
+      "_id": "66466792744170cc87f10813",
+      "qty": 1
+    }
+    ]
+  }
+  ```
 - Agregar un producto al carrito creado: [POST http://localhost:4000/api/cart/:cid/product/:pid](http://localhost:4000/api/cart/:cid/product/:pid)
  - Crear un nuevo producto: [POST http://localhost:4000/api/db/products](http://localhost:4000/api/db/products)
   ```
