@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { config } from '../../config.js';
 import { ObjectId } from 'mongodb';
 import ProductModel from '../../dao/models/products.model.js';
+import { uploader } from '../../config/multer/uploader.js';
 
 const router = Router();
 
@@ -35,15 +36,15 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
     
 
-    const { title, description, price, code, stock, category, thumbnails } = req.body;
+    const { title, description, price, code, stock, category} = req.body;
 
     if (!title || !description || !price || !code || !stock || !category) {
         return res.status(400).json({ error: 'Todos los campos requeridos deben estar presentes.' });
     }
-
+    const thumbnails = req.files ? req.files.map(file => file.filename) : [];
     try {
         const newProduct = {
             title,

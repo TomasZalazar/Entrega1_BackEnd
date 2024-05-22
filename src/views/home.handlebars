@@ -3,10 +3,19 @@
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Nombre del producto: {{this.title}}</h6>
-                    <p class="card-text">ID del producto: {{this.id}}</p>
-                    <p class="card-text">Precio del producto: {{this.price}}</p>
-                    <p class="card-text">Descripción del producto: {{this.description}}</p>
+                    <h6 class="card-title">Nombre del producto: {{title}}</h6>
+                    <p class="card-text">ID del producto: {{_id}}</p>
+                    <p class="card-text">Precio del producto: {{price}}</p>
+                    <p class="card-text">Descripción del producto: {{description}}</p>
+                    <p class="card-text">Stock disponible: {{stock}}</p>
+                    <p class="card-text">Categoría: {{category}}</p>
+                    {{#if thumbnails.length}}
+                        <div class="thumbnails">
+                            {{#each thumbnails}}
+                                <img src="{{this}}" alt="Thumbnail del producto">
+                            {{/each}}
+                        </div>
+                    {{/if}}
                 </div>
             </div>
         </div>
