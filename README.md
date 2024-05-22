@@ -5,6 +5,7 @@
 ## Instalación
 
 ```bash
+
 # Paso 1: Clonar el repositorio
 git clone https://github.com/TomasZalazar/Entrega1_BackEnd.git
 
@@ -13,16 +14,11 @@ npm i
 
 # Paso 3: Correr el script en consola en la carpeta raíz "npm run app" para conectar con el servidor de Express
 npm run app
+
+# Paso 4: usar la extension de VSCODE: POSTMAN para las peticiones POST PUT DELETE
+
 ```
 
-Para usar las acciones GET, levantar el servidor con el script `npm run app`.
-
-```bash
-# Paso 1: en consola : npm run app
-   (esto corre por dentro nodemon ./src/app.js)
-
-# Paso 2: abrir archivo app.http y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request
-```
 
 Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes alguna pregunta o problema, no dudes en preguntar.
 
@@ -42,19 +38,12 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 ### Chat
 
-- [http://localhost:4000/api/db/chat](http://localhost:4000/api/db/chat)
+- [http://localhost:4000/api/db/chat/messages](http://localhost:4000/api/db/chat/messages)
 
 ### Vista chat
 
 - [http://localhost:4000/chat](http://localhost:4000/chat)
 
-### Inicio
-
-- [http://localhost:4000/home](http://localhost:4000/home)
-
-### Productos en tiempo real
-
-- [http://localhost:4000/realtimeproducts](http://localhost:4000/realtimeproducts)
 
 ## Acciones
 
