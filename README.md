@@ -38,19 +38,12 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 ### Chat
 
-- [http://localhost:4000/api/db/chat](http://localhost:4000/api/db/chat)
+- [http://localhost:4000/api/db/chat/messages](http://localhost:4000/api/db/chat/messages)
 
 ### Vista chat
 
 - [http://localhost:4000/chat](http://localhost:4000/chat)
 
-### Inicio
-
-- [http://localhost:4000/home](http://localhost:4000/home)
-
-### Productos en tiempo real
-
-- [http://localhost:4000/realtimeproducts](http://localhost:4000/realtimeproducts)
 
 ## Acciones
 
