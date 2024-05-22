@@ -1,6 +1,6 @@
 import { Router } from "express";
-import ProductManager from '../dao/fylesystem/productManager.js';
-import { uploader } from "../config/multer/uploader.js";
+import ProductManager from '../../dao/fylesystem/productManager.js';
+import { uploader } from "../../config/multer/uploader.js";
 import crypto from "crypto"
 
 

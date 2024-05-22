@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    console.log('Datos recibidos:', req.body);
+    
 
     const { title, description, price, code, stock, category, thumbnails } = req.body;
 

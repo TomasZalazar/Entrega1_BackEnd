@@ -5,13 +5,14 @@ import logger from 'morgan'
 import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
 // routes
-import productsRoutes from './routes/routes.products.js';
-import cartRoutes from './routes/routes.carts.js'
+import productsRoutes from './routes/routesFS/routes.products.js';
+import cartRoutesMDB from './routes/routesDB/routes.cart.db.js'
 import viewsRoutes from './routes/routes.views.js'
 // import usersRoutes from './routes/routes.users.js';
 import initSocket from './config/socket/initSocket.js';
 import productsRoutesMDB from './routes/routesDB/routes.products.db.js'
 import usersRoutesMDB from './routes/routesDB/routes.users.db.js'
+import chatRouterMDB from './routes/routesDB/routes.chat.db.js'
 const app = express()
 
 const expressInstance = app.listen(config.PORT, async () => {
@@ -35,16 +36,18 @@ const expressInstance = app.listen(config.PORT, async () => {
     app.set('views', `${config.DIRNAME}/views`);
     app.set('view engine', 'handlebars');
 
-    // mongoose
+    // mongoose endpoints
     app.use('/api/db/products', productsRoutesMDB)
-    app.use('/api/users', usersRoutesMDB) 
-
-
-    // endpoints
+    app.use('/api/db/users', usersRoutesMDB) 
+    app.use('/api/db/chat', chatRouterMDB);
+    app.use('/api/db/cart', cartRoutesMDB)
+    // views    
     app.use('/', viewsRoutes)
+
+
+    // endpoints FS
     app.use('/api/products', productsRoutes)
     // app.use('/api/users', usersRoutes)
-    app.use('/api/cart', cartRoutes)
     app.use('/static', express.static(`${config.DIRNAME}/public`))
 
 });

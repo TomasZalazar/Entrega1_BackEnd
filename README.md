@@ -1,7 +1,8 @@
 # NODEJS BACKEND CODERHOUSE
-Entrega 1 
 
-## Intalacion 
+
+
+## Instalación
 
 ```bash
 # Paso 1: Clonar el repositorio
@@ -12,105 +13,102 @@ npm i
 
 # Paso 3: Correr el script en consola en la carpeta raíz "npm run app" para conectar con el servidor de Express
 npm run app
-````
-## Para usar las acciones GET 
-levantar el servidor con el script
-npm run app
-````bash 
-# Paso 1: en consola : npm run app 
+```
+
+Para usar las acciones GET, levantar el servidor con el script `npm run app`.
+
+```bash
+# Paso 1: en consola : npm run app
    (esto corre por dentro nodemon ./src/app.js)
-`````
-abrir el archivo app.http
-````bash 
-# Paso 2: abrir archivo y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request 
-`````
 
-
-
+# Paso 2: abrir archivo app.http y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request
+```
 
 Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes alguna pregunta o problema, no dudes en preguntar.
 
 ## Rutas
 
-```python 
+### Productos
 
-# Products
+- [http://localhost:4000/api/db/products](http://localhost:4000/api/db/products)
 
-http://localhost:4000/api/products
+### Usuarios
 
-# Cart
+- [http://localhost:4000/api/db/users](http://localhost:4000/api/db/users)
 
-http://localhost:4000/api/cart
+### Carrito
 
-# home
+- [http://localhost:4000/api/db/cart](http://localhost:4000/api/db/cart)
 
-http://localhost:4000/home
+### Chat
 
-# Real time products
+- [http://localhost:4000/api/db/chat](http://localhost:4000/api/db/chat)
 
-http://localhost:4000/realtimeproducts
+### Vista chat
 
-````
+- [http://localhost:4000/chat](http://localhost:4000/chat)
+
+### Inicio
+
+- [http://localhost:4000/home](http://localhost:4000/home)
+
+### Productos en tiempo real
+
+- [http://localhost:4000/realtimeproducts](http://localhost:4000/realtimeproducts)
 
 ## Acciones
-```python 
 
-# GET
+### Recuperar Productos (GET)
 
-## Recuperar los productos y por su id
+- Recuperar todos los productos: [GET http://localhost:4000/api/db/products](http://localhost:4000/api/db/products)
+- Recuperar un producto por su ID: [GET http://localhost:4000/api/db/products/:pid](http://localhost:4000/api/db/products/:pid)
+- Recuperar el array de carrito: [GET http://localhost:4000/api/db/cart](http://localhost:4000/api/db/cart)
+- Recuperar el carrito por su ID: [GET http://localhost:4000/api/db/cart/:cid](http://localhost:4000/api/cart/:cid)
 
-GET http://localhost:4000/api/products
+### Crear Productos (POST)
 
-GET http://localhost:4000/api/products/:pid
 
-## recuperar el array de carrito
 
-GET http://localhost:4000/api/cart
+- Crear un carrito con su ID: [POST http://localhost:4000/api/db/cart](http://localhost:4000/api/cart)
+- Agregar un producto al carrito creado: [POST http://localhost:4000/api/cart/:cid/product/:pid](http://localhost:4000/api/cart/:cid/product/:pid)
+ - Crear un nuevo producto: [POST http://localhost:4000/api/db/products](http://localhost:4000/api/db/products)
+  ```
+  {
+      "title": "Nuevo producto",
+      "description": "esta es la descripcion del nuevo producto",
+      "price": 200,
+      "code": "AAB01",
+      "stock": 30,
+      "thumbnails": "http://example.com",
+      "category" : "categoria del producto"
+  }
+  ```
 
-## Recuperar el carrito por su id
+### Actualizar Productos (PUT)
 
-GET http://localhost:4000/api/cart/:cid
 
-# POST 
 
-## Crear un nuevo producto con su body
+- Actualizar Producto por su id: [PUT http://localhost:4000/api/db/products/:id](http://localhost:4000/api/db/products/:id)
+- Actualizar Usuario por su id: [PUT http://localhost:4000/api/db/users/:id](http://localhost:4000/api/db/users/:pid)
+- Actualizar Carrito por su id: [PUT http://localhost:4000/api/db/cart/:id](http://localhost:4000/api/db/cart/:id)
 
-POST http://localhost:4000/api/products
-Content-Type: application/json
 
-{
-    "title": "Nuevo producto",
-    "description": "esta es la descripcion del nuevo producto",
-    "price": 200,
-    "code": "AAB01",
-    "stock": 30,
-    "thumbnails":
-}
+### Elimnar por su id (DELETE)
 
-## Crear un carrito con su cid 
+- \*\* Metodo DELETE
 
-POST http://localhost:4000/api/cart/
+ 
+- Eliminar Producto por su id: [DELETE http://localhost:4000/api/db/products/:id](http://localhost:4000/api/db/products/:id)
+- Eliminar Usuario por su id: [DELETE http://localhost:4000/api/db/users/:id](http://localhost:4000/api/db/users/:pid)
+- Eliminar Carrito por su id: [DELETE http://localhost:4000/api/db/cart/:id](http://localhost:4000/api/db/cart/:id)
 
-## Agregar un producto al carrito creado
 
-POST http://localhost:4000/api/cart/:cid/product/:pid
 
-# PUT
-## Actualizar campos de un producto y requisitos del body
 
-PUT http://localhost:4000/api/products/:pid
-Content-Type: application/json
 
-{
-    "title": "Nuevo producto",
-    "description": "esta es la descripcion del nuevo producto",
-    "price": 200
-}
+````phyton
 
-# DELETE
-
-## Eliminar producto 
-
-DELETE http://localhost:4000/api/products/:pid
+Gracias por tomarte el tiempo de leer mi proyecto. 
+saludos Zalazar Tomas🚀
 
 ````

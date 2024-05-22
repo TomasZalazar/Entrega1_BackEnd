@@ -5,7 +5,7 @@ import UserModel from '../../dao/models/users.model.js';
 const router = Router();
 
 // Obtener todos los usuarios
-router.get('/users', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const users = await UserModel.find().lean();
         res.status(200).send({ status: 200, payload: users });
