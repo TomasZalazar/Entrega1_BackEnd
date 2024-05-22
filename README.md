@@ -15,13 +15,12 @@ npm i
 npm run app
 ```
 
-Para usar las acciones GET, levantar el servidor con el script `npm run app`.
 
 ```bash
 # Paso 1: en consola : npm run app
    (esto corre por dentro nodemon ./src/app.js)
 
-# Paso 2: abrir archivo app.http y ubicar el mouse en la palabra GET para poder clickearlo y hacer el request
+# Paso 2: usar la extension de VSCODE: POSTMAN para las peticiones POST PUT DELETE 
 ```
 
 Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes alguna pregunta o problema, no dudes en preguntar.
