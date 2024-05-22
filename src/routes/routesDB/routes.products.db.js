@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
         if (!ObjectId.isValid(id)) {
             return res.status(400).send({ error: 'Invalid ID format' });
         }
-        const product = await ProductModel.getById(id);
+        const product = await ProductModel.findById(id);
         if (product) {
             res.send(product);
         } else {
