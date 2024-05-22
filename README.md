@@ -5,6 +5,7 @@
 ## Instalación
 
 ```bash
+
 # Paso 1: Clonar el repositorio
 git clone https://github.com/TomasZalazar/Entrega1_BackEnd.git
 
@@ -13,15 +14,11 @@ npm i
 
 # Paso 3: Correr el script en consola en la carpeta raíz "npm run app" para conectar con el servidor de Express
 npm run app
+
+# Paso 4: usar la extension de VSCODE: POSTMAN para las peticiones POST PUT DELETE
+
 ```
 
-
-```bash
-# Paso 1: en consola : npm run app
-   (esto corre por dentro nodemon ./src/app.js)
-
-# Paso 2: usar la extension de VSCODE: POSTMAN para las peticiones POST PUT DELETE 
-```
 
 Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes alguna pregunta o problema, no dudes en preguntar.
 
