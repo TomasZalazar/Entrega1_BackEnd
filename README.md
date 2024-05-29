@@ -27,6 +27,7 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 - [http://localhost:4000/api/db/products](http://localhost:4000/api/db/products)
 
+
 ### Usuarios
 
 - [http://localhost:4000/api/db/users](http://localhost:4000/api/db/users)
@@ -43,6 +44,19 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 
 - [http://localhost:4000/chat](http://localhost:4000/chat)
 
+
+### ENTREGA 29/05
+
+### Producto Paginado
+
+- [http://localhost:4000/api/db/products/paginate?limit=2&page=2&query={"category":"Electronics"}&sort=1](http://localhost:4000/api/db/products/paginate?limit=2&page=2&query={"category":"Electronics"}&sort=1)
+
+### Vista paginado
+
+- [http://localhost:4000/home](http://localhost:4000/home)
+
+### Vista Cart/id
+- [http://localhost:4000/api/db/cart/carts/664e4b35f227f216309f7fff](http://localhost:4000/api/db/cart/carts/664e4b35f227f216309f7fff)
 
 ## Acciones
 

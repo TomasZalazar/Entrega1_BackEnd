@@ -3,10 +3,25 @@ import productModel from "../dao/models/products.model.js"; // Importa tu modelo
 const router = Router();
 
 router.get('/home', async (req, res) => {
+    const options = {
+        page: parseInt(req.query.page) || 1,
+        limit: parseInt(req.query.limit) || 5,
+        lean: true 
+    };
+    
+    const query = {};
+    
     try {
-        const products = await productModel.find().lean(); // Consulta todos los productos de la base de datos
-        console.log(products); // Verifica los datos antes de pasarlos a la plantilla
-        res.render('home', { products }); // Renderiza la vista 'home' con los productos obtenidos de la base de datos
+        const products = await productModel.paginate(query, options);
+        res.render('home', {
+            products: products.docs,
+            totalPages: products.totalPages,
+            currentPage: options.page,
+            showPrev: options.page > 1,
+            showNext: options.page < products.totalPages,
+            prevPage: options.page > 1 ? options.page - 1 : null,
+            nextPage: options.page < products.totalPages ? options.page + 1 : null
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error interno del servidor');

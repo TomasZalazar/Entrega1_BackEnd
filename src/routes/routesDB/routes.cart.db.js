@@ -7,6 +7,18 @@ import CartsManager from '../../dao/cartManager.mdb.js';
 const router = Router();
 const cartManager = new CartsManager(cartsModel, usersModel);
 
+router.get('/carts/:cid', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const cart = await cartsModel.findById(cartId).populate('_user_id').populate('products.product').lean();
+        res.render('cart', { cart });
+    } catch (error) {
+        console.error("Error retrieving cart:", error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+
 router.get('/', async (req, res) => {
     const process = await cartManager.getAll();
     res.status(process.status).send({ origin: process.origin, payload: process.payload });
