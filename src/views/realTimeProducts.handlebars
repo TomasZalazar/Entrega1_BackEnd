@@ -82,7 +82,7 @@
                     formData.append('thumbnails', file);
                 }
 
-                const response = await fetch('/api/products/', {
+                const response = await fetch('/api/db/products/', {
                     method: 'POST',
                     body: formData,
                 });

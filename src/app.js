@@ -41,6 +41,7 @@ const expressInstance = app.listen(config.PORT, async () => {
     app.use('/api/db/users', usersRoutesMDB) 
     app.use('/api/db/chat', chatRouterMDB);
     app.use('/api/db/cart', cartRoutesMDB)
+    
     // views    
     app.use('/', viewsRoutes)
 

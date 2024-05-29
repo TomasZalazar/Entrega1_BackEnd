@@ -26,7 +26,13 @@ const schema = new mongoose.Schema({
     products: { type: [{ _id: mongoose.Schema.Types.ObjectId, qty: Number }], required: true, ref: 'products' }
 });
 
+// Middleware de preconsulta para find y findOne
 schema.pre('find', function () {
+    this.populate({ path: '_user_id', model: usersModel });
+    this.populate({ path: 'products._id', model: productModel });
+});
+
+schema.pre('findOne', function () {
     this.populate({ path: '_user_id', model: usersModel });
     this.populate({ path: 'products._id', model: productModel });
 });

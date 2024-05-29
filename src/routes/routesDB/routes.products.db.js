@@ -1,104 +1,72 @@
 import { Router } from 'express';
-import mongoose from 'mongoose';
-import { config } from '../../config.js';
-import { ObjectId } from 'mongodb';
 import ProductModel from '../../dao/models/products.model.js';
-import { uploader } from '../../config/multer/uploader.js';
-
+import ProductManager from '../../dao/productManager.mdb.js';
 const router = Router();
+const productManager = new ProductManager(ProductModel);
 
 
+
+// http://localhost:4000/api/db/products/paginate?limit=2&page=2&query={"category":"Electronics"}&sort=1
+router.get('/paginate', async (req, res) => {
+    try {
+        const { limit, page, query, sort } = req.query;
+        const parsedQuery = query ? JSON.parse(query) : {};
+        const result = await productManager.paginateProducts({ limit, page, query: parsedQuery, sort });
+        res.status(result.status).send({ origin: result.origin, payload: result.payload });
+    } catch (error) {
+        res.status(500).send({ error: "Error al obtener productos paginados" });
+    }
+});
 router.get('/', async (req, res) => {
     try {
-        const products = await ProductModel.find().lean();
-        res.status(200).send({ status: 200, payload: products });
+        const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+        const result = await productManager.getAll(limit);
+        res.status(result.status).send({ origin: result.origin, payload: result.payload }); 
     } catch (error) {
-        console.error("Error en la consulta:", error);
         res.status(500).send({ error: "Error al obtener productos" });
     }
 });
 
 router.get('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        if (!ObjectId.isValid(id)) {
-            return res.status(400).send({ error: 'Invalid ID format' });
-        }
-        const product = await ProductModel.findById(id);
-        if (product) {
-            res.send(product);
-        } else {
-            res.status(404).send({ error: 'Product not found' });
-        }
+        const id = req.params.id;
+        const result = await productManager.getById(id);
+        res.status(result.status).send({ origin: result.origin, payload: result.payload });
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        res.status(500).send({ error: "Error al obtener producto" });
     }
 });
 
 
-router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
-    
-
-    const { title, description, price, code, stock, category} = req.body;
-
-    if (!title || !description || !price || !code || !stock || !category) {
-        return res.status(400).json({ error: 'Todos los campos requeridos deben estar presentes.' });
-    }
-    const thumbnails = req.files ? req.files.map(file => file.filename) : [];
+router.post('/', async (req, res) => {
     try {
-        const newProduct = {
-            title,
-            description,
-            price,
-            code,
-            stock,
-            category,
-            thumbnails: thumbnails || []
-        };
-        const addedProduct = await ProductModel.create(newProduct);
-        res.status(201).json(addedProduct);
+        const newData = req.body;
+        const result = await productManager.add(newData);
+        res.status(result.status).send({ origin: result.origin, payload: result.payload });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send({ error: "Error al agregar producto" });
     }
 });
-
 
 router.put('/:id', async (req, res) => {
     try {
-        const productId = req.params.id;
-        if (!ObjectId.isValid(productId)) {
-            return res.status(400).json({ error: 'Invalid ID format' });
-        }
-        const updatedProduct = req.body;
-        const result = await ProductModel.update(productId, updatedProduct);
-        if (result) {
-            res.json(result);
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
+        const id = req.params.id;
+        const updProd = req.body;
+        const result = await productManager.update(id, updProd);
+        res.status(result.status).send({ origin: result.origin, payload: result.payload });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send({ error: "Error al actualizar producto" });
     }
 });
-
 
 router.delete('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ error: 'ID de producto no válido' });
-        }
-
-        const process = await ProductModel.findOneAndDelete({ _id: id });
-
-        if (!process) {
-            return res.status(404).json({ error: 'Producto no encontrado' });
-        }
-
-        res.status(200).send({ origin: config.SERVER, payload: process });
+        const id = req.params.id;
+        const result = await productManager.delete(id);
+        res.status(result.status).send({ origin: result.origin, payload: result.payload });
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        res.status(500).send({ error: "Error al eliminar producto" });
     }
 });
+
 export default router;

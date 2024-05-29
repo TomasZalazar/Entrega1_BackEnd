@@ -3,7 +3,7 @@ import path from 'path'
 
 
 export  const config = {
-    SERVER : 'remoto',
+    SERVER : 'MongoDB',
     PORT: 4000,
     DIRNAME: path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:\/)/, '$1')), // Win
     // UPLOAD_DIR: 'public/img'

@@ -1,7 +1,6 @@
 # NODEJS BACKEND CODERHOUSE
 
 
-
 ## Instalación
 
 ```bash
@@ -102,7 +101,6 @@ Estos pasos te permitirán configurar y ejecutar el backend Node.js. Si tienes a
 - Eliminar Producto por su id: [DELETE http://localhost:4000/api/db/products/:id](http://localhost:4000/api/db/products/:id)
 - Eliminar Usuario por su id: [DELETE http://localhost:4000/api/db/users/:id](http://localhost:4000/api/db/users/:pid)
 - Eliminar Carrito por su id: [DELETE http://localhost:4000/api/db/cart/:id](http://localhost:4000/api/db/cart/:id)
-
 
 
 

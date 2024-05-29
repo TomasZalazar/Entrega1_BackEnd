@@ -3,7 +3,7 @@ import { Router } from 'express';
 import chatModel from '../../dao/models/chat.model.js';
 const router = Router();
 
-// Endpoint para obtener los mensajes
+
 router.get('/messages', async (req, res) => {
     
   try {
@@ -15,7 +15,7 @@ router.get('/messages', async (req, res) => {
   }
 });
 
-// Endpoint para guardar un nuevo mensaje
+
 router.post('/messages', async (req, res) => {
   try {
     const { user, message } = req.body;
