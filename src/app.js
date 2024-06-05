@@ -4,15 +4,20 @@ import { config } from './config.js';
 import logger from 'morgan'
 import handlebars from 'express-handlebars';
 import mongoose from 'mongoose';
+import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 // routes
 import productsRoutes from './routes/routesFS/routes.products.js';
 import cartRoutesMDB from './routes/routesDB/routes.cart.db.js'
 import viewsRoutes from './routes/routes.views.js'
-// import usersRoutes from './routes/routes.users.js';
-import initSocket from './config/socket/initSocket.js';
+import initSocket from './socket/initSocket.js';
 import productsRoutesMDB from './routes/routesDB/routes.products.db.js'
 import usersRoutesMDB from './routes/routesDB/routes.users.db.js'
 import chatRouterMDB from './routes/routesDB/routes.chat.db.js'
+import cookiesRoutes from './routes/cookies/routes.cookies.js'
+import sessionsRoutes from './routes/sessions/routes.sessions.js'
+// import usersRoutes from './routes/routes.users.js';
 const app = express()
 
 const expressInstance = app.listen(config.PORT, async () => {
@@ -30,6 +35,17 @@ const expressInstance = app.listen(config.PORT, async () => {
     app.disable('x-powered-by')
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.use(cookieParser(config.SECRET));
+
+
+    //sessions
+    app.use(session({
+        // store: new fileStorage({ path: './sessions', ttl: 100, retries: 0 }),
+        store: MongoStore.create({ mongoUrl: config.MONGODB_URI, ttl: 600 }),
+        secret: config.SECRET,
+        resave: true,
+        saveUninitialized: true
+    }));
 
     // motor plantilla config 
     app.engine('handlebars', handlebars.engine());
@@ -41,7 +57,8 @@ const expressInstance = app.listen(config.PORT, async () => {
     app.use('/api/db/users', usersRoutesMDB) 
     app.use('/api/db/chat', chatRouterMDB);
     app.use('/api/db/cart', cartRoutesMDB)
-    
+    app.use('/api/cookies', cookiesRoutes)
+    app.use('/api/sessions', sessionsRoutes)
     // views    
     app.use('/', viewsRoutes)
 

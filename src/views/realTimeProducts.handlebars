@@ -1,4 +1,43 @@
 <div class="container">
+
+    <h1>Perfil de usuario {{login_type}}</h1>
+
+    <h2>Usuario: {{user.firstName}}, {{user.lastName}}</h2>
+    <h3>Rol: {{user.role}}</h3>
+
+    <form action="/api/sessions/logout" method="get">
+        <button type="submit" class="btn btn-success">Salir</button>
+    </form>
+
+    <h1 class="mt-4">Listado de productos</h1>
+    <div class="row">
+        {{#each products}}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Nombre del producto: {{title}}</h6>
+                    <p class="card-text">ID del producto: {{_id}}</p>
+                    <p class="card-text">Precio del producto: {{price}}</p>
+                    <p class="card-text">Descripción del producto: {{description}}</p>
+                    <p class="card-text">Stock disponible: {{stock}}</p>
+                    <p class="card-text">Categoría: {{category}}</p>
+                    <button class="btn btn-primary add-to-cart" data-id="{{_id}}">Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div id="pagination" class="mt-3">
+        {{#if showPrev}}
+        <a href="/realtimeproducts?page={{prevPage}}" class="btn btn-primary">Anterior</a>
+        {{/if}}
+        <span class="mx-2">Página {{currentPage}} de {{totalPages}}</span>
+        {{#if showNext}}
+        <a href="/realtimeproducts?page={{nextPage}}" class="btn btn-primary">Siguiente</a>
+        {{/if}}
+    </div>
+</div>
+<div class="container-">
     <div class="row">
         <!-- Lista de productos -->
         <div class="col-md-6">
@@ -44,7 +83,9 @@
             </form>
         </div>
     </div>
+
 </div>
+
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
     integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
@@ -159,7 +200,6 @@
             }
         });
 
-        // Escuchar eventos del servidor Socket.IO para productos eliminados
         // Escuchar eventos del servidor Socket.IO para productos eliminados
         socketClient.on('productoEliminado', data => {
             if (data && data.id) {

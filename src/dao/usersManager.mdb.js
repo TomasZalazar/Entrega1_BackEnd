@@ -78,6 +78,25 @@ class UserManager {
             return { status: 500, error: error.message };
         }
     }
+    async getAggregated(match, sort)  {
+        try {
+            return await this.model.aggregate([
+                { $match: match },
+                // { $group: group },
+                { $sort: sort }
+            ]);
+        } catch (err) {
+            return err.message;
+        };
+    };
+
+    async getPaginated(filter, options) {
+        try {
+            return await usersModel.paginate(filter, options);
+        } catch (err) {
+            return err.message;
+        };
+    };
 }
 
 export default UserManager;

@@ -1,5 +1,5 @@
 import multer from 'multer';
-import  {config}  from '../../config.js';
+import  {config}  from '../config.js';
 
 // Configuración de Multer para manejar la carga de archivos
 const storage = multer.diskStorage({

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import ProductModel from '../../dao/models/products.model.js';
 import ProductManager from '../../dao/productManager.mdb.js';
+import { uploader } from '../../middleware/uploader.js';
 const router = Router();
 const productManager = new ProductManager(ProductModel);
 
@@ -38,15 +39,32 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', uploader.array('thumbnails', 4), async (req, res) => {
+    
+
+    const { title, description, price, code, stock, category} = req.body;
+
+    if (!title || !description || !price || !code || !stock || !category) {
+        return res.status(400).json({ error: 'Todos los campos requeridos deben estar presentes.' });
+    }
+    const thumbnails = req.files ? req.files.map(file => file.filename) : [];
     try {
-        const newData = req.body;
-        const result = await productManager.add(newData);
-        res.status(result.status).send({ origin: result.origin, payload: result.payload });
+        const newProduct = {
+            title,
+            description,
+            price,
+            code,
+            stock,
+            category,
+            thumbnails: thumbnails || []
+        };
+        const addedProduct = await ProductModel.create(newProduct);
+        res.status(201).json(addedProduct);
     } catch (error) {
-        res.status(500).send({ error: "Error al agregar producto" });
+        res.status(500).json({ error: error.message });
     }
 });
+
 
 router.put('/:id', async (req, res) => {
     try {

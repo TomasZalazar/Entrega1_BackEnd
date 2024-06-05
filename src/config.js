@@ -10,7 +10,8 @@ export  const config = {
     get UPLOAD_DIR() {return `${this.DIRNAME}/public/img`},
     MONGODB_URI : "mongodb+srv://coder_zato:zato1308@clustercoderdb.yr7oapi.mongodb.net/ecommerce",
     // MONGODB_URI2 : "mongodb://127.0.0.1:27017/ecommerce",
-    MONGODB_ID_REGEX: /^[a-fA-F0-9]{24}$/
+    MONGODB_ID_REGEX: /^[a-fA-F0-9]{24}$/,
+    SECRET : "tomas_!#=("
 }
 
 

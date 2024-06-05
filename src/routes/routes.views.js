@@ -1,8 +1,10 @@
 import { Router } from "express";
-import productModel from "../dao/models/products.model.js"; // Importa tu modelo de producto de Mongoose
+import productModel from "../dao/models/products.model.js"; 
+import { adminAuth } from "../middleware/adminAuth.js";
+
 const router = Router();
 
-router.get('/home', async (req, res) => {
+router.get('/realtimeproducts',adminAuth, async (req, res) => {
     const options = {
         page: parseInt(req.query.page) || 1,
         limit: parseInt(req.query.limit) || 5,
@@ -13,14 +15,15 @@ router.get('/home', async (req, res) => {
     
     try {
         const products = await productModel.paginate(query, options);
-        res.render('home', {
+        res.render('realTimeProducts', {
             products: products.docs,
             totalPages: products.totalPages,
             currentPage: options.page,
             showPrev: options.page > 1,
             showNext: options.page < products.totalPages,
             prevPage: options.page > 1 ? options.page - 1 : null,
-            nextPage: options.page < products.totalPages ? options.page + 1 : null
+            nextPage: options.page < products.totalPages ? options.page + 1 : null,
+             user: req.session.user 
         });
     } catch (error) {
         console.error(error);
@@ -28,18 +31,37 @@ router.get('/home', async (req, res) => {
     }
 });
 
-router.get('/realtimeproducts', async (req, res) => {
-    try {
-        const products = await productModel.find().lean(); // Consulta todos los productos de la base de datos
-        res.render('realTimeProducts', { products }); // Renderiza la vista 'realTimeProducts' con los productos obtenidos de la base de datos
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error interno del servidor');
-    }
-});
+// router.get('/realtimeproducts', async (req, res) => {
+//     try {
+//         const products = await productModel.find().lean(); // Consulta todos los productos de la base de datos
+//         res.render('realTimeProducts', { products }); // Renderiza la vista 'realTimeProducts' con los productos obtenidos de la base de datos
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Error interno del servidor');
+//     }
+// });
 
 router.get('/chat', (req, res) => {
     res.render('chat', {});
 });
+
+
+
+router.get('/register', (req, res) => {
+    res.render('register', {});
+});
+
+router.get('/login', (req, res) => {
+    // Si hay datos de sesión activos, redireccionamos al perfil
+    if (req.session.user) return res.redirect('/realtimeproductos');
+    res.render('login', {});
+});
+
+router.get('/profile', (req, res) => {
+    // Si NO hay datos de sesión activos, redireccionamos al loginm
+    if (!req.session.user) return res.redirect('/login');
+    res.render('profile', { user: req.session.user });
+});
+
 
 export default router;
