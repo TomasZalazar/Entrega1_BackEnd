@@ -23,7 +23,7 @@ router.get('/realtimeproducts',adminAuth, async (req, res) => {
             showNext: options.page < products.totalPages,
             prevPage: options.page > 1 ? options.page - 1 : null,
             nextPage: options.page < products.totalPages ? options.page + 1 : null,
-             user: req.session.user 
+            user: req.session.user 
         });
     } catch (error) {
         console.error(error);
@@ -58,10 +58,14 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/profile', (req, res) => {
-    // Si NO hay datos de sesión activos, redireccionamos al loginm
-    if (!req.session.user) return res.redirect('/login');
-    res.render('profile', { user: req.session.user });
+   
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    
+    res.render('profile', { 
+        user: req.session.user,
+        login_type: req.session.user.login_type 
+    });
 });
-
-
 export default router;

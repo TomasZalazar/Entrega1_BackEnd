@@ -38,8 +38,18 @@
             <span class="input-group-text" id="group2"><i class="fa-solid fa-lock"></i></span>
             <input type="password" name="password" class="form-control" required="required">
         </div>
+         {{#if showError}}
+            <div class="alert alert-danger" role="alert" style="margin-top: 16px;">
+                {{ errorMessage }}
+            </div>
+        {{/if}}
 
-        <button type="submit" class="btn btn-success">Ingresar</button>
+        <div style="margin-top: 24px;">
+            <button type="submit" class="btn btn-success submit_btn">Ingresar</button>
+            <br /><br />
+        </div>
+            <button class="btn btn-info submit_btn" onclick="window.location.replace('/api/sessions/ghlogin')">Github</button>
+
 
         <div style="margin-top: 24px;">
             No tenés cuenta?: <a class="a2" href="/register">Registrate</a>

@@ -95,6 +95,7 @@ class CartsManager {
             }
 
             cart.products = cart.products.filter(item => String(item._id) !== productId);
+            console.log(cart.products)
             await cart.save();
             return { origin: config.SERVER, status: 200, payload: cart };
         } catch (error) {
