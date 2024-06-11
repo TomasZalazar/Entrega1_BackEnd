@@ -10,7 +10,7 @@ const localStrategy = local.Strategy;
 const manager = new UsersManager(userModel);
 
 const initAuthStrategies = () => {
-    // Estrategia local (cotejamos contra nuestra base de datos)
+    
     passport.use('login', new localStrategy(
         { passReqToCallback: true, usernameField: 'email' },
         async (req, email, password, done) => {
@@ -51,8 +51,8 @@ const initAuthStrategies = () => {
                         }
 
                         const process = await manager.add(user);
-                        console.log(process); // Agregado para depuración
-                        foundUser = process.payload; // Usar el usuario creado
+                        
+                        foundUser = process.payload; 
                     }
 
                     return done(null, foundUser);

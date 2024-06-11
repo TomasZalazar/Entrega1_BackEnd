@@ -42,26 +42,26 @@ class UserManager {
 
     async add(userData) {
         try {
-            // Verificar si userData está definido y es un objeto
+           
             if (!userData || typeof userData !== 'object') {
                 throw new Error('Los datos del usuario son inválidos');
             }
     
-            // Crear una instancia del modelo de usuario con los datos proporcionados
+           
             const newUser = new this.model(userData);
     
-            // Guardar el nuevo usuario en la base de datos
+           
             const savedUser = await newUser.save();
     
-            // Verificar si se guardó correctamente el usuario
+            
             if (!savedUser) {
                 throw new Error('No se pudo guardar el usuario en la base de datos');
             }
     
-            // Devolver el nuevo usuario guardado en un objeto de respuesta
+            
             return { origin: config.SERVER, status: 201, payload: savedUser };
         } catch (error) {
-            // Capturar y manejar cualquier error que ocurra durante el proceso
+           
             console.error("Error al agregar usuario:", error);
             return { status: 500, error: error.message };
         }

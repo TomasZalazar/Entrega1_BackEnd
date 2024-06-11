@@ -31,21 +31,10 @@ router.get('/realtimeproducts',adminAuth, async (req, res) => {
     }
 });
 
-// router.get('/realtimeproducts', async (req, res) => {
-//     try {
-//         const products = await productModel.find().lean(); // Consulta todos los productos de la base de datos
-//         res.render('realTimeProducts', { products }); // Renderiza la vista 'realTimeProducts' con los productos obtenidos de la base de datos
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error interno del servidor');
-//     }
-// });
 
 router.get('/chat', (req, res) => {
     res.render('chat', {});
 });
-
-
 
 router.get('/register', (req, res) => {
     res.render('register', {});
@@ -61,8 +50,7 @@ router.get('/profile', (req, res) => {
    
     if (!req.session.user) {
         return res.redirect('/login');
-    }
-    
+    } 
     res.render('profile', { 
         user: req.session.user,
         login_type: req.session.user.login_type 
