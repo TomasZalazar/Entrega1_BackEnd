@@ -4,21 +4,48 @@ import GitHubStrategy from 'passport-github2';
 import userModel from '../dao/models/users.model.js';
 import { config } from '../config.js';
 import UsersManager from '../dao/usersManager.mdb.js';
-import { isValidPassword } from '../utils.js';
+import { createHash, isValidPassword } from '../utils.js';
 
 const localStrategy = local.Strategy;
 const manager = new UsersManager(userModel);
 
 const initAuthStrategies = () => {
-    
+    passport.use('register', new localStrategy(
+        { passReqToCallback: true, usernameField: 'email' },
+        async (req, username, password, done) => {
+            try {
+                const { firstName, lastName } = req.body;
+                const foundUser = await manager.getOne({ email: username });
+
+                if (foundUser) {
+                    return done(null, false, { message: 'El usuario ya existe' });
+                }
+
+                const hashedPassword = createHash(password);
+                const newUser = {
+                    email: username,
+                    password: hashedPassword,
+                    firstName,
+                    lastName,
+                    role: 'user'
+                };
+
+                const createdUser = await manager.add(newUser);
+                return done(null, createdUser);
+            } catch (err) {
+                return done(err);
+            }
+        }
+    ));
+
     passport.use('login', new localStrategy(
         { passReqToCallback: true, usernameField: 'email' },
         async (req, email, password, done) => {
             try {
-                const foundUser = await userModel.findOne({ email: email });
+                const foundUser = await userModel.findOne({ email });
 
                 if (foundUser && isValidPassword(password, foundUser.password)) {
-                    const { password, ...filteredFoundUser } = foundUser;
+                    const { password, ...filteredFoundUser } = foundUser.toObject();
                     return done(null, filteredFoundUser);
                 } else {
                     return done(null, false);
@@ -40,19 +67,19 @@ const initAuthStrategies = () => {
                 const email = profile._json?.email || null;
 
                 if (email) {
-                    let foundUser = await manager.getOne({ email: email });
+                    let foundUser = await manager.getOne({ email });
 
                     if (!foundUser) {
                         const user = {
                             firstName: profile._json.name.split(' ')[0],
                             lastName: profile._json.name.split(' ')[1],
-                            email: email,
+                            email,
                             password: 'none'
-                        }
+                        };
 
                         const process = await manager.add(user);
-                        
-                        foundUser = process.payload; 
+
+                        foundUser = process.payload;
                     }
 
                     return done(null, foundUser);
@@ -65,18 +92,23 @@ const initAuthStrategies = () => {
         }
     ));
 
-    // Serialización y deserialización de usuario
     passport.serializeUser((user, done) => {
-        done(null, user._id); // Solo serializa el ID del usuario
+        const userId = user._id || user.payload?._id;
+        if (userId) {
+            done(null, userId);
+        } else {
+            done(new Error('user id no encontrado'), null);
+        }
     });
 
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await userModel.findById(id);
-            done(null, user); // Deserializa el usuario completo
+            done(null, user);
         } catch (err) {
             done(err, null);
         }
     });
 }
+
 export default initAuthStrategies;
