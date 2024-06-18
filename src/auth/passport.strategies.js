@@ -1,14 +1,27 @@
+// 
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
-import userModel from '../dao/models/users.model.js';
+import jwt from 'passport-jwt'
+
+// routes
 import { config } from '../config.js';
 import UsersManager from '../dao/usersManager.mdb.js';
 import { createHash, isValidPassword } from '../utils.js';
+import userModel from '../dao/models/users.model.js';
+
 
 const localStrategy = local.Strategy;
+const jwtStrategy = jwt.Strategy
+const jwtExtractor = jwt.ExtractJwt
 const manager = new UsersManager(userModel);
 
+
+const cookieExtractor = (req) => {
+    let token = null
+    if ( req && req.cookies) token = req.cookies[`${config.APP_NAME}_cookie`]
+    return token
+ }
 const initAuthStrategies = () => {
     passport.use('register', new localStrategy(
         { passReqToCallback: true, usernameField: 'email' },
@@ -65,7 +78,7 @@ const initAuthStrategies = () => {
         async (req, accessToken, refreshToken, profile, done) => {
             try {
                 const email = profile._json?.email || null;
-
+                console.log(profile)
                 if (email) {
                     let foundUser = await manager.getOne({ email });
 
@@ -91,7 +104,21 @@ const initAuthStrategies = () => {
             }
         }
     ));
-
+    // Estrategia para verificación de token vía cookie
+    passport.use('jwtlogin', new jwtStrategy(
+        {
+            // Aquí llamamos al extractor de cookie
+            jwtFromRequest: jwtExtractor.fromExtractors([cookieExtractor]),
+            secretOrKey: config.SECRET
+        },
+        async (jwt_payload, done) => {
+            try {
+                return done(null, jwt_payload);
+            } catch (err) {
+                return done(err);
+            }
+        }
+    ));
     passport.serializeUser((user, done) => {
         const userId = user._id || user.payload?._id;
         if (userId) {

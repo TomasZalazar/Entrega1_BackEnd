@@ -9,17 +9,17 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 // routes
-import productsRoutes from './routes/routesFS/routes.products.js';
-import cartRoutesMDB from './routes/routesDB/routes.cart.db.js'
-import viewsRoutes from './routes/routes.views.js'
+import cartRoutes from './routes/cart.routes.js'
+import viewsRoutes from './routes/views.routes.js'
 import initSocket from './socket/initSocket.js';
-import productsRoutesMDB from './routes/routesDB/routes.products.db.js'
-import usersRoutesMDB from './routes/routesDB/routes.users.db.js'
-import chatRouterMDB from './routes/routesDB/routes.chat.db.js'
-import cookiesRoutes from './routes/cookies/routes.cookies.js'
-import sessionsRoutes from './routes/sessions/routes.sessions.js'
+import productsRoutes from './routes/products.routes.js'
+import usersRoutes from './routes/users.routes.js'
+import chatRouter from './routes/chat.routes.js'
+import cookiesRoutes from './routes/cookies.routes.js'
+import authRoutes from './routes/auth.routes.js'
 import initAuthStrategies from './auth/passport.strategies.js';
 // import usersRoutes from './routes/routes.users.js';
+// import productsRoutes from './routes/routesFS/routes.products.js';
 const app = express()
 
 const expressInstance = app.listen(config.PORT, async () => {
@@ -48,27 +48,27 @@ const expressInstance = app.listen(config.PORT, async () => {
         saveUninitialized: true
     }));
     // inicializar Passport y sesiones de Passport
+    initAuthStrategies();
     app.use(passport.initialize())
     app.use(passport.session())
-    initAuthStrategies();
     // motor plantilla config 
     app.engine('handlebars', handlebars.engine());
     app.set('views', `${config.DIRNAME}/views`);
     app.set('view engine', 'handlebars');
 
     // mongoose endpoints
-    app.use('/api/db/products', productsRoutesMDB)
-    app.use('/api/db/users', usersRoutesMDB)
-    app.use('/api/db/chat', chatRouterMDB);
-    app.use('/api/db/cart', cartRoutesMDB)
+    app.use('/api/db/products', productsRoutes)
+    app.use('/api/db/users', usersRoutes)
+    app.use('/api/db/chat', chatRouter);
+    app.use('/api/db/cart', cartRoutes)
     app.use('/api/cookies', cookiesRoutes)
-    app.use('/api/sessions', sessionsRoutes)
+    app.use('/api/auth', authRoutes)
     // views    
     app.use('/', viewsRoutes)
 
 
     // endpoints FS
-    app.use('/api/products', productsRoutes)
+    // app.use('/api/products', productsRoutes)
     // app.use('/api/users', usersRoutes)
     app.use('/static', express.static(`${config.DIRNAME}/public`))
 

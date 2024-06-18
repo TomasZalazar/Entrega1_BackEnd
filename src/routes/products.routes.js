@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import ProductModel from '../../dao/models/products.model.js';
-import ProductManager from '../../dao/productManager.mdb.js';
-import { uploader } from '../../middleware/uploader.js';
+import ProductModel from '../dao/models/products.model.js';
+import ProductManager from '../dao/productManager.mdb.js';
+import { uploader } from '../middleware/uploader.js';
 const router = Router();
 const productManager = new ProductManager(ProductModel);
 

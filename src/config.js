@@ -4,6 +4,7 @@ import path from 'path'
 
 export  const config = {
     SERVER : 'MongoDB',
+    APP_NAME : 'TOMAS_APP',
     PORT: 4000,
     DIRNAME: path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:\/)/, '$1')), // Win
     // UPLOAD_DIR: 'public/img'
@@ -20,7 +21,7 @@ export  const config = {
     */
     GITHUB_CLIENT_ID: 'Iv23liOdMdXUm6BjGHpV',
     GITHUB_CLIENT_SECRET: 'e26c8b963bcf9cd91ed4584e09a3a41fd0bf3fbd',
-    GITHUB_CALLBACK_URL: 'http://localhost:4000/api/sessions/ghlogincallback'
+    GITHUB_CALLBACK_URL: 'http://localhost:4000/api/auth/ghlogincallback'
 }
 
 

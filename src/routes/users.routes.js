@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import UserManager from '../../dao/usersManager.mdb.js';
-import userModel from '../../dao/models/users.model.js';
-import { config } from '../../config.js';
-import { adminAuth } from '../../middleware/adminAuth.js';
+import UserManager from '../dao/usersManager.mdb.js';
+import userModel from '../dao/models/users.model.js';
+import { config } from '../config.js';
+import { adminAuth } from '../middleware/adminAuth.js';
 
 const router = Router();
 const userManager = new UserManager(userModel);
