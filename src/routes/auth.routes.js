@@ -65,7 +65,7 @@ router.post('/pplogin', verifyRequiredBody(['email', 'password']),
             req.session.save(err => {
                 if (err) return res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
 
-                res.redirect('/profile');
+                res.redirect('/realtimeproducts');
             });
         } catch (err) {
             res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
@@ -88,7 +88,7 @@ router.get('/ghlogincallback',
                 req.session.save(err => {
                     if (err) return res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
 
-                    res.redirect('/profile');
+                    res.redirect('/realtimeproducts');
                 });
             } catch (err) {
                 res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
@@ -114,7 +114,7 @@ router.get('/ghlogincallback',
                         return res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
                     }
         
-                    res.redirect('/profile'); // Redirigir después de guardar la sesión
+                    res.redirect('/realtimeproducts'); // Redirigir después de guardar la sesión
                 });
             } catch (err) {
                 res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });

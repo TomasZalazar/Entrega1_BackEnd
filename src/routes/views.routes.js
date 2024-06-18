@@ -4,7 +4,7 @@ import { adminAuth } from "../middleware/adminAuth.js";
 
 const router = Router();
 
-router.get('/realtimeproducts',adminAuth, async (req, res) => {
+router.get('/realtimeproducts', async (req, res) => {
     const options = {
         page: parseInt(req.query.page) || 1,
         limit: parseInt(req.query.limit) || 5,
