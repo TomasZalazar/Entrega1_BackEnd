@@ -1,10 +1,10 @@
 import { Router } from "express";
 import productModel from "../dao/models/products.model.js"; 
-import { adminAuth } from "../middleware/adminAuth.js";
+import { verifyAuthorization } from "../middleware/adminAuth.js";
 
 const router = Router();
 
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/realtimeproducts',  async (req, res) => {
     const options = {
         page: parseInt(req.query.page) || 1,
         limit: parseInt(req.query.limit) || 5,
@@ -42,7 +42,7 @@ router.get('/register', (req, res) => {
 
 router.get('/login', (req, res) => {
     // Si hay datos de sesión activos, redireccionamos al perfil
-    if (req.session.user) return res.redirect('/realtimeproductos');
+    if (req.session.user) return res.redirect('/realtimeproducts');
     res.render('login', {});
 });
 

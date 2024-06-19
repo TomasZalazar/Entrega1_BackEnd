@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { config } from '../config.js';
-import { adminAuth } from '../middleware/adminAuth.js';
-import { createHash, isValidPassword, verifyRequiredBody, createToken } from '../utils.js';
+import { adminAuth, verifyAuthorization } from '../middleware/adminAuth.js';
+import { createHash, verifyRequiredBody, createToken, verifyToken } from '../utils.js';
 
 import passport from 'passport';
+import { passportCall } from '../auth/passport.strategies.js';
 
 const router = Router();
 
@@ -84,7 +85,7 @@ router.get('/ghlogincallback',
         { failureRedirect: `/login?error=${encodeURI('Error al identificar con Github')}` }), async (req, res) => {
             try {
                 req.session.user = req.user // req.user es inyectado AUTOMATICAMENTE por Passport al parsear el done()
-                
+
                 req.session.save(err => {
                     if (err) return res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
 
@@ -96,35 +97,42 @@ router.get('/ghlogincallback',
         });
 
 
-        // Endpoint autenticación con Passport contra base de datos propia y jwt
-        router.post('/jwtlogin', verifyRequiredBody(['email', 'password']), passport.authenticate('login', { failureRedirect: `/login?error=${encodeURI('Usuario o clave no válidos')}`}), async (req, res) => {
-            try {
-                if (!req.user) {
-                    return res.status(401).send({ origin: config.SERVER, payload: 'Autenticación fallida' });
-                }
-        
-                // Crear el token
-                const token = createToken(req.user, '1h');
-                res.cookie(`${config.APP_NAME}_cookie`, token, { maxAge: 60 * 60 * 1000, httpOnly: true });
-        
-                // Guardar la sesión antes de redirigir
-                req.session.user = req.user;
-                req.session.save(err => {
-                    if (err) {
-                        return res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
-                    }
-        
-                    res.redirect('/realtimeproducts'); // Redirigir después de guardar la sesión
-                });
-            } catch (err) {
-                res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
+// Endpoint autenticación con Passport contra base de datos propia y jwt
+router.post('/jwtlogin', verifyRequiredBody(['email', 'password']), passport.authenticate('login', { failureRedirect: `/login?error=${encodeURI('Usuario o clave no válidos')}` }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send({ origin: config.SERVER, payload: 'Autenticación fallida' });
+        }
+
+        // Crear el token
+        const token = createToken(req.user, '1h');
+        res.cookie(`${config.APP_NAME}_cookie`, token, { maxAge: 60 * 60 * 1000, httpOnly: true });
+
+        // Guardar la sesión antes de redirigir
+        req.session.user = req.user;
+        req.session.save(err => {
+            if (err) {
+                return res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
             }
+
+            res.redirect('/realtimeproducts'); // Redirigir después de guardar la sesión
         });
-router.get('/private', adminAuth, async (req, res) => {
+    } catch (err) {
+        res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
+    }
+});
+router.get('/private', verifyToken, verifyAuthorization('admin'), async (req, res) => {
     try {
         res.status(200).send({ origin: config.SERVER, payload: 'Bienvenido ADMIN!' });
     } catch (err) {
         res.status(500).send({ origin: config.SERVER, error: err.message });
+    }
+});
+router.get('/ppadmin', passportCall('jwtlogin'), verifyAuthorization('admin'), async (req, res) => {
+    try {
+        res.status(200).send({ origin: config.SERVER, payload: 'Bienvenido ADMIN!' });
+    } catch (err) {
+        res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
     }
 });
 

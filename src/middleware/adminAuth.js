@@ -9,3 +9,13 @@ import { config } from "../config.js";
 
     next();
 }
+
+export const verifyAuthorization = role => {
+    return async (req, res, next) => {
+        if (!req.user) return res.status(401).send({ origin: config.SERVER, payload: 'Usuario no autenticado' });
+        console.log(req.user.role)
+        if (req.user.role !== role) return res.status(403).send({ origin: config.SERVER, payload: 'No tiene permisos para acceder al recurso' });
+        
+        next();
+    }
+}

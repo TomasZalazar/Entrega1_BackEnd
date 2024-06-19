@@ -30,10 +30,10 @@ export const verifyToken = (req, res, next) => {
     const cookieToken = req.cookies && req.cookies[`${config.APP_NAME}_cookie`] ? req.cookies[`${config.APP_NAME}_cookie`]: undefined;
     const queryToken = req.query.access_token ? req.query.access_token: undefined;
     const receivedToken = headerToken || cookieToken || queryToken;
-
+    
     if (!receivedToken) return res.status(401).send({ origin: config.SERVER, payload: 'Se requiere token' });
-
-    jwt.verify(headerToken, config.SECRET, (err, payload) => {
+    
+    jwt.verify(receivedToken, config.SECRET, (err, payload) => {
         if (err) return res.status(403).send({ origin: config.SERVER, payload: 'Token no válido' });
         req.user = payload;
         next();

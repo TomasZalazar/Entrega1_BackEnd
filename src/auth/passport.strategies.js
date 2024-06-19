@@ -78,7 +78,6 @@ const initAuthStrategies = () => {
         async (req, accessToken, refreshToken, profile, done) => {
             try {
                 const email = profile._json?.email || null;
-                console.log(profile)
                 if (email) {
                     let foundUser = await manager.getOne({ email });
 
@@ -119,6 +118,8 @@ const initAuthStrategies = () => {
             }
         }
     ));
+
+    
     passport.serializeUser((user, done) => {
         const userId = user._id || user.payload?._id;
         if (userId) {
@@ -138,4 +139,16 @@ const initAuthStrategies = () => {
     });
 }
 
+export const passportCall = strategy => {
+    return async (req, res, next) => {
+        passport.authenticate(strategy, { session: false }, function (err, user, info) {
+            if (err) return next(err);
+            // if (!user) return res.status(401).send({ origin: config.SERVER, payload: null, error: info.messages ? info.messages : info.toString() });
+            if (!user) return res.status(401).send({ origin: config.SERVER, payload: null, error: 'Usuario no autenticado' });
+
+            req.user = user;
+            next();
+        })(req, res, next);
+    }
+};
 export default initAuthStrategies;
