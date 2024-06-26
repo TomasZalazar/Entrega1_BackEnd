@@ -38,9 +38,20 @@ router.post('/', async (req, res) => {
 router.put('/:cid/products/:pid', async (req, res) => {
     const { cid, pid } = req.params;
     const { qty } = req.body;
+
+    // Llama a la función para agregar producto al carrito
     const process = await cartManager.addProductToCart(cid, pid, qty);
-    res.status(process.status).send({ message: process.message, error: process.error });
+
+    // Verifica el resultado del proceso
+    if (process.error) {
+        // Manejo de errores
+        return res.status(process.status).send({ error: process.error });
+    }
+
+    // Éxito: devuelve el carrito actualizado
+    res.status(process.status).send({ message: process.message, cart: process.payload });
 });
+
 
 router.delete('/:cid/products', async (req, res) => {
     const cartId = req.params.cid;

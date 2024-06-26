@@ -25,7 +25,7 @@ const app = express()
 
 const expressInstance = app.listen(config.PORT, async () => {
     await mongoose.connect(config.MONGODB_URI)
-    console.log(`Servidor escuchando en el puerto http://localhost:${config.PORT} enlazada en bbdd`)
+    console.log(`Servidor escuchando en el puerto http://localhost:${config.PORT}/login enlazada en bbdd`)
     console.log(config.DIRNAME);
 
 

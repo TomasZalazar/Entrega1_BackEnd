@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import cartModel from "./carts.model.js"
 mongoose.pluralize(null);
 const collection = 'users';
 const schema = new mongoose.Schema({
@@ -11,6 +11,14 @@ const schema = new mongoose.Schema({
     role: { type: String, enum: ['admin', 'premium', 'user'], default: 'user' }
 });
 
+schema.pre('find', function () {
+    this.populate({ path: '_cart_id', model: cartModel });
+});
+
+// Middleware de preconsulta para findOne
+schema.pre('findOne', function () {
+    this.populate({ path: '_cart_id', model: cartModel });
+});
 const model = mongoose.model(collection, schema);
 
 export default model;

@@ -103,7 +103,7 @@ router.post('/jwtlogin', verifyRequiredBody(['email', 'password']), passport.aut
         if (!req.user) {
             return res.status(401).send({ origin: config.SERVER, payload: 'Autenticación fallida' });
         }
-
+        console.log(req.user)
         // Crear el token
         const token = createToken(req.user, '1h');
         res.cookie(`${config.APP_NAME}_cookie`, token, { maxAge: 60 * 60 * 1000, httpOnly: true });
@@ -121,6 +121,15 @@ router.post('/jwtlogin', verifyRequiredBody(['email', 'password']), passport.aut
         res.status(500).send({ origin: config.SERVER, payload: null, error: err.message });
     }
 });
+router.get('/current', passport.authenticate('current', { failureRedirect: `/current?error=${encodeURI('No hay un token registrado')}`}), async (req, res) => {
+    try {
+        const currentToken = req.user; // Asumiendo que req.user ya contiene los datos que quieres enviar
+        res.status(200).json({ payload: currentToken });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get('/private', verifyToken, verifyAuthorization('admin'), async (req, res) => {
     try {
         res.status(200).send({ origin: config.SERVER, payload: 'Bienvenido ADMIN!' });

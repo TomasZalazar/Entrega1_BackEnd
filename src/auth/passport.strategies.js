@@ -84,34 +84,54 @@ const initAuthStrategies = () => {
             clientSecret: config.GITHUB_CLIENT_SECRET,
             callbackURL: config.GITHUB_CALLBACK_URL
         },
-        async (req, accessToken, refreshToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done) => {
             try {
                 const email = profile._json?.email || null;
-                if (email) {
-                    let foundUser = await manager.getOne({ email });
-
-                    if (!foundUser) {
-                        const user = {
-                            firstName: profile._json.name.split(' ')[0],
-                            lastName: profile._json.name.split(' ')[1],
-                            email,
-                            password: 'none'
-                        };
-
-                        const process = await manager.add(user);
-
-                        foundUser = process.payload;
-                    }
-
-                    return done(null, foundUser);
-                } else {
+                if (!email) {
                     return done(new Error('Faltan datos de perfil'), null);
                 }
+    
+                let foundUser = await userModel.findOne({ email });
+    
+                if (!foundUser) {
+                    const newCart = new CartModel();
+                    const savedCart = await newCart.save();
+    
+                    const newUser = new userModel({
+                        email,
+                        firstName: profile._json.name.split(' ')[0],
+                        lastName: profile._json.name.split(' ')[1],
+                        role: 'user',
+                        _cart_id: savedCart._id,
+                        password: 'none'
+                    });
+    
+                    foundUser = await newUser.save();
+                }
+    
+                return done(null, foundUser);
             } catch (err) {
                 return done(err, false);
             }
         }
     ));
+    
+    // Estrategia para verificación de token vía cookie
+    passport.use('current', new jwtStrategy(
+        {
+            // Aquí llamamos al extractor de cookie
+            jwtFromRequest: jwtExtractor.fromExtractors([cookieExtractor]),
+            secretOrKey: config.SECRET
+        },
+        async (jwt_payload, done) => {
+            try {
+                return done(null, jwt_payload);
+            } catch (err) {
+                return done(err);
+            }
+        }
+    ));
+
     // Estrategia para verificación de token vía cookie
     passport.use('jwtlogin', new jwtStrategy(
         {

@@ -1,9 +1,11 @@
 import productModel from "../dao/models/products.model.js";
 import { config } from '../config.js';
+
 class CartsManager {
     constructor(cartModel, userModel) {
         this.cartModel = cartModel;
         this.userModel = userModel;
+        this.productModel = productModel;
     }
 
     async getAll() {
@@ -67,20 +69,30 @@ class CartsManager {
 
     async addProductToCart(cartId, productId, qty = 1) {
         try {
-            const product = await productModel.findById(productId);
+            // Verificar si el producto existe
+            const product = await this.productModel.findById(productId);
             if (!product) {
                 return { status: 404, error: 'Product not found' };
             }
-
-            const cart = await this.cartModel.findById(cartId);
-            const existingProductIndex = cart.products.findIndex(item => String(item._id) === productId);
-            if (existingProductIndex !== -1) {
-                cart.products[existingProductIndex].qty += qty;
+    
+            // Obtener el carrito por ID
+            let cart = await this.cartModel.findById(cartId);
+    
+            // Verificar si el producto ya está en el carrito
+            const existingProduct = cart.products.find(item => String(item.product._id) === productId);
+            if (existingProduct) {
+                // Si el producto ya está en el carrito, sumar la cantidad especificada
+                existingProduct.qty += qty;
             } else {
-                cart.products.push({ _id: productId, qty });
+                // Si el producto no está en el carrito, agregarlo con la cantidad especificada
+                cart.products.push({ product: productId, qty });
             }
+    
+            // Guardar el carrito actualizado en la base de datos
             await cart.save();
-            return { status: 201, message: 'Product added to cart successfully' };
+    
+            // Devolver el carrito actualizado como parte de la respuesta
+            return { status: 201, message: 'Product added to cart successfully', payload: cart };
         } catch (error) {
             console.error("Error adding product to cart:", error);
             return { status: 500, error: 'Internal server error' };

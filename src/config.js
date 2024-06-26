@@ -1,35 +1,26 @@
 /* import * as url from 'url' */
-import path from 'path'
+import path from 'path';
+import dotenv from 'dotenv';
 
 
-export  const config = {
-    SERVER : 'MongoDB',
-    APP_NAME : 'TOMAS_APP',
+
+
+
+dotenv.config();
+
+export const config = {
+    SERVER: 'MongoDB',
+    APP_NAME: 'TOMAS_APP',
     PORT: 4000,
     DIRNAME: path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:\/)/, '$1')), // Win
     // UPLOAD_DIR: 'public/img'
-    get UPLOAD_DIR() {return `${this.DIRNAME}/public/img`},
-    MONGODB_URI : "mongodb+srv://coder_zato:zato1308@clustercoderdb.yr7oapi.mongodb.net/ecommerce",
-    // MONGODB_URI2 : "mongodb://127.0.0.1:27017/ecommerce",
-    MONGODB_ID_REGEX: /^[a-fA-F0-9]{24}$/,
-    SECRET : "tomas_!#=(",
-
-     /*
-    ATENCION!!!: datos como el client_secret de Github NO deben exponerse de esta forma,
-    lo estamos haciendo simplemente por comodidad para instrucción, más adelante los
-    protegeremos colocándolos en otro lugar.
-    */
-    GITHUB_CLIENT_ID: 'Iv23liOdMdXUm6BjGHpV',
-    GITHUB_CLIENT_SECRET: 'e26c8b963bcf9cd91ed4584e09a3a41fd0bf3fbd',
-    GITHUB_CALLBACK_URL: 'http://localhost:4000/api/auth/ghlogincallback'
-}
-
-
-
-
-
-
-
-
-
-
+    get UPLOAD_DIR() { return `${this.DIRNAME}/public/img`; },
+    MONGODB_URI: process.env.MONGODB_URI,
+    // MONGODB_URI2: process.env.MONGODB_URI2",
+    MONGODB_ID_REGEX: new RegExp(process.env.MONGODB_ID_REGEX),
+    SECRET: process.env.SECRET,
+    
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GITHUB_CALLBACK_URL: process.env.GITHUB_CALLBACK_URL
+};

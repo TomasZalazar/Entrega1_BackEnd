@@ -1,6 +1,6 @@
 # NODEJS BACKEND CODERHOUSE
 
-### ENTREGA 05/06
+### ENTREGA 26/6
 
 ### vistas login 
 
@@ -11,6 +11,11 @@ rol admin creado con las credenciales pedidas en la entrega
 ### vistas register
 
 - [http://localhost:4000/register](http://localhost:4000/register)
+
+### currente user
+una vez creado el usuario desde la view register cuando ingresemos al endpoitn current mostrara los datos con el carrito nuevo craeado
+- [http://localhost:4000/api/session/current](http://localhost:4000/api/session/current)
+- [http://localhost:4000/api/auth/current](http://localhost:4000/api/auth/current)
 
 
 ## Instalación
