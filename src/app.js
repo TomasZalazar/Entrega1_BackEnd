@@ -18,6 +18,7 @@ import chatRouter from './routes/chat.routes.js'
 import cookiesRoutes from './routes/cookies.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import initAuthStrategies from './auth/passport.strategies.js';
+import sessionRoutes from './routes/session.routes.js';
 // import usersRoutes from './routes/routes.users.js';
 // import productsRoutes from './routes/routesFS/routes.products.js';
 const app = express()
@@ -63,6 +64,7 @@ const expressInstance = app.listen(config.PORT, async () => {
     app.use('/api/db/cart', cartRoutes)
     app.use('/api/cookies', cookiesRoutes)
     app.use('/api/auth', authRoutes)
+    app.use('/api/session', sessionRoutes)
     // views    
     app.use('/', viewsRoutes)
 

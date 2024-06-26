@@ -9,6 +9,7 @@ import { config } from '../config.js';
 import UsersManager from '../dao/usersManager.mdb.js';
 import { createHash, isValidPassword } from '../utils.js';
 import userModel from '../dao/models/users.model.js';
+import CartModel from '../dao/models/carts.model.js';
 
 
 const localStrategy = local.Strategy;
@@ -19,31 +20,39 @@ const manager = new UsersManager(userModel);
 
 const cookieExtractor = (req) => {
     let token = null
-    if ( req && req.cookies) token = req.cookies[`${config.APP_NAME}_cookie`]
+    if (req && req.cookies) token = req.cookies[`${config.APP_NAME}_cookie`]
     return token
- }
+}
 const initAuthStrategies = () => {
     passport.use('register', new localStrategy(
         { passReqToCallback: true, usernameField: 'email' },
         async (req, username, password, done) => {
+            const { firstName, lastName } = req.body;
+    
             try {
-                const { firstName, lastName } = req.body;
-                const foundUser = await manager.getOne({ email: username });
-
+                // Verificar si el usuario ya existe
+                const foundUser = await userModel.findOne({ email: username });
+    
                 if (foundUser) {
                     return done(null, false, { message: 'El usuario ya existe' });
                 }
-
+    
+                // Crear un nuevo carrito para el usuario
+                const newCart = new CartModel();
+                const savedCart = await newCart.save();
+    
+                // Crear el nuevo usuario con el ID del carrito asociado
                 const hashedPassword = createHash(password);
-                const newUser = {
+                const newUser = new userModel({
                     email: username,
                     password: hashedPassword,
                     firstName,
                     lastName,
-                    role: 'user'
-                };
-
-                const createdUser = await manager.add(newUser);
+                    role: 'user',
+                    _cart_id: savedCart._id // Asociar el ID del carrito al usuario
+                });
+    
+                const createdUser = await newUser.save();
                 return done(null, createdUser);
             } catch (err) {
                 return done(err);
@@ -119,7 +128,29 @@ const initAuthStrategies = () => {
         }
     ));
 
-    
+
+    passport.use('jwt-current', new jwtStrategy(
+        {
+
+            jwtFromRequest: jwtExtractor.fromExtractors([cookieExtractor]),
+            secretOrKey: config.SECRET
+        },
+        async (jwtPayload, done) => {
+            try {
+
+                const user = await userModel.findById(jwtPayload.id);
+                if (user) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                }
+            } catch (err) {
+                return done(err, false);
+            }
+        }
+    ));
+
+
     passport.serializeUser((user, done) => {
         const userId = user._id || user.payload?._id;
         if (userId) {

@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    _cart_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'carts' },
     role: { type: String, enum: ['admin', 'premium', 'user'], default: 'user' }
 });
 
